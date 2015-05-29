@@ -93,8 +93,3 @@ for city in master_cities:
 #displays message if we have all the cities
 if count == len(master_cities):
     print "All the cities that should be in the file are in the file"
-
-
-
-
-

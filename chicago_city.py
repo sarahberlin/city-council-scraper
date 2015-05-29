@@ -2,19 +2,34 @@ import requests
 import bs4
 import csv
 from csv import DictWriter
+import urllib, urllib2
 
 root_url = 'http://www.cityofchicago.org'
 index_url = root_url + '/city/en/about/wards.html'
 
+def checkURL(x):
+    try:
+        code = urllib2.urlopen(x).code
+    except:
+        code = 404
+    return code
+
 #get page urls of all the councilors
 def get_page_urls():
-    response = requests.get(index_url)
-    soup = bs4.BeautifulSoup(response.text)    
-    return [a.attrs.get('href') for a in soup.select('h4 a[href]')][1:]  
+    if checkURL(index_url) == 404:
+        print '404 error. Check the url for {0}'.format(index_url)
+    else:
+        response = requests.get(index_url)
+        soup = bs4.BeautifulSoup(response.text)    
+        return [a.attrs.get('href') for a in soup.select('h4 a[href]')][1:]
+
+#creates a list of all the urls and does an error check on each of them
+page_urls = get_page_urls()
+for page_url in page_urls:
+    if checkURL(root_url + page_url) == 404:
+        print '404 error. Check the url for {0}'.format(root_url + page_url)
 
 #get data from each individual councilor's page
-
-
 def get_councilor_data(page_url):
     councilor_data = {}
     response = requests.get(root_url + page_url)
@@ -46,10 +61,10 @@ def get_councilor_data(page_url):
 dictList = []
 
 #run the functions together
-page_urls = get_page_urls()
 for page_url in page_urls:
     dictList.append(get_councilor_data(page_url))
 
+#adds state
 for dictionary in dictList:
     dictionary['state'] = 'IL'
 

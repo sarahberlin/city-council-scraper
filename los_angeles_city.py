@@ -2,12 +2,23 @@ import requests
 import bs4
 import csv
 from csv import DictWriter
+import urllib, urllib2
+
+def checkURL(x):
+    try:
+        code = urllib2.urlopen(x).code
+    except:
+        code = 404
+    return code
 
 #set up
 root_url = 'http://lacity.org/city-government/elected-official-offices/city-council/council-directory'
 response = requests.get(root_url)
 soup = bs4.BeautifulSoup(response.text)
 dictList = []
+
+if checkURL(root_url) == 404:
+    print '404 error. Check the url for {0}'.format(root_url)
 
 def get_councilor_data():
 	for x in range(0,15):
@@ -30,7 +41,7 @@ def get_councilor_data():
 
 get_councilor_data()
 
-
+#adds state
 for dictionary in dictList:
     dictionary['state'] = 'CA'
 

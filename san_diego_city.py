@@ -2,11 +2,25 @@ import requests
 import bs4
 import csv
 from csv import DictWriter
+import urllib, urllib2
+
+def checkURL(x):
+    try:
+        code = urllib2.urlopen(x).code
+    except:
+        code = 404
+    return code
+
 
 root_url = 'http://www.sandiego.gov'
 index_url = root_url + '/citycouncil'
 
 
+#runs error check on root_url
+if checkURL(index_url) == 404:
+    print '404 error. Check the url for {0}'.format(index_url)
+
+#creates url for each councillor
 page_urls = []
 for x in range (1, 10):
     response = requests.get(index_url)
@@ -15,7 +29,8 @@ for x in range (1, 10):
     page_urls.append(page_url)
 
 dictList = []
-   
+
+#scrapes council main page   
 for x in range(0,9):
     councilor_data = {}
     try:
@@ -30,7 +45,7 @@ for x in range(0,9):
         pass
     dictList.append(councilor_data)         
 
-
+#adds state
 for dictionary in dictList:
     dictionary['state'] = 'CA'
 
