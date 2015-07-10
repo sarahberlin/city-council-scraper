@@ -24,9 +24,9 @@ if checkURL(root_url) == 404:
 def get_councilor_data1():
     for x in range (1,15):
         newDict = {}
-        newDict['office.name'] = "City Council Member "+ soup.select('td h2')[x].get_text().encode('utf-8').replace('\r\n          ','').split(':')[0].replace('Group', 'At-Large Group')
+        newDict['office.name'] =  "City Council Member "+ soup.select('td h2')[x].get_text().encode('utf-8').replace('\r\n          ','').split(':')[0].replace('Group', 'At-Large Group').replace('\r\n\t\t\t\t\t\t\t\t\t\t','')
         newDict['official.name'] = soup.select('td h2')[x].get_text().encode('utf-8').replace('\r\n          ','').split(':')[1].strip()
-        newDict['electoral.district'] = "Jacksonville City Council " + soup.select('td h2')[x].get_text().encode('utf-8').replace('\r\n          ','').split(':')[0].replace('Group', 'At-Large Group')
+        newDict['electoral.district'] = "Jacksonville City Council " + soup.select('td h2')[x].get_text().encode('utf-8').replace('\r\n          ','').split(':')[0].replace('Group', 'At-Large Group').replace('\r\n\t\t\t\t\t\t\t\t\t\t','')
         newDict['address'] = '117 West Duval St., Suite 425 Jacksonville, FL 32202'
         newDict['website'] = root_url
         if x < 7:
@@ -43,9 +43,9 @@ def get_councilor_data1():
 def get_councilor_data2():
     for x in range (16,21):
         newDict = {}
-        newDict['office.name'] = "City Council Member "+ soup.select('td h2')[x].get_text().encode('utf-8').replace('\r\n          ','').split(':')[0].replace('Group', 'At-Large Group')
+        newDict['office.name'] = "City Council Member "+ soup.select('td h2')[x].get_text().encode('utf-8').replace('\r\n          ','').split(':')[0].replace('Group', 'At-Large Group').replace('\r\n\t\t\t\t\t\t\t\t\t\t','')
         newDict['official.name'] = soup.select('td h2')[x].get_text().encode('utf-8').replace('\r\n          ','').split(':')[1].strip()
-        newDict['electoral.district'] = "Jacksonville City Council " + soup.select('td h2')[x].get_text().encode('utf-8').replace('\r\n          ','').split(':')[0].replace('Group', 'At-Large Group')
+        newDict['electoral.district'] = "Jacksonville" 
         newDict['address'] = '117 West Duval St., Suite 425 Jacksonville, FL 32202'
         newDict['website'] = root_url
         newDict['phone'] = '(904) 630-1377'

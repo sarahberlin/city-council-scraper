@@ -5,6 +5,10 @@ import csv
 from csv import DictWriter
 from csv import DictReader
 import os
+import datetime
+
+#establishes today's date, which will be included in the file name
+today = datetime.date.today()
 
 path = '/Users/sarahberlin/Desktop/PYTHON/Scraping/City'
 os.listdir(path)
@@ -52,7 +56,7 @@ for source in sources:
 
 #tries to write each of those rows to the new csv and then close the csv
 fieldnames = all_fields
-city_merged_file = open('city_merged_file.csv','wb')
+city_merged_file = open('city_merged_file-{0}.csv'.format(today),'wb')
 csvwriter = csv.DictWriter(city_merged_file, delimiter=',', fieldnames=fieldnames)
 csvwriter.writerow(dict((fn,fn) for fn in fieldnames))
 for row in all_rows:
@@ -61,7 +65,7 @@ for row in all_rows:
 city_merged_file.close()
 
 
-with open("city_merged_file.csv", "r") as city_merged_file_csv:
+with open("city_merged_file-{0}.csv".format(today), "r") as city_merged_file_csv:
      city_merged_file = city_merged_file_csv.read()
 
 #print city_merged_file
