@@ -26,7 +26,7 @@ def get_page_urls():
         for x in [a.attrs.get('href') for a in soup.select('a[href^=/district]')]:
             if len(x) == 10:
                 urls.append(x)
-        urls = urls[0:8]
+        urls = set(urls)
         return urls
 
 #creates a list of all the urls and does an error check on each of them
@@ -41,24 +41,20 @@ def get_councilor_data(page_url):
     response = requests.get(root_url+page_url)
     soup = bs4.BeautifulSoup(response.text)
     try:
-        if page_url == '/district6':
-            councilor_data['electoral.district'] = "Phoenix City Council District 6"
-            councilor_data['official.name'] = soup.select('h3.title')[0].get_text().replace('Councilman ','').replace('Councilwoman ','')
-            councilor_data['office.name'] = 'City Councilman District 6'
-            councilor_data['address'] = "200 W. Washington St., 11th Floor Phoenix, AZ 85003"
-            councilor_data['website'] = (root_url+page_url)                 
-            councilor_data['phone'] = '602-262-6011'     
-            councilor_data['email'] = root_url + '/district{0}/contact-district-{0}'.format(page_url[-1])
-        else:
-            councilor_data['electoral.district'] = "Phoenix City Council "+soup.select('h3.title')[0].get_text().encode('utf-8').replace('\r\n                                    \r\n                                    \r\n                                    ', '').replace('\r\n                                    \r\n                                ', '').replace('\r\n                                        \r\n                                        \r\n                                        ','').replace('\r\n                                        \r\n                                    ','')
+        councilor_data['address'] = "200 W. Washington St., 11th Floor Phoenix, AZ 85003"
+        councilor_data['website'] = (root_url+page_url)
+        councilor_data['phone'] = '602-262-6011'     
+        councilor_data['email'] = root_url + '/district{0}/contact-district-{0}'.format(page_url[-1])
+        if page_url != '/district6':
+            councilor_data['office.name'] = 'City ' + soup.select('h3.title')[1].get_text().encode('utf-8').replace('\xe2\x80\x8b', '').replace('Vice', 'Council').strip().split(' ')[0] + " " + soup.select('h3.title')[0].get_text().encode('utf-8').replace('\r\n','').replace('Vice', 'Council').strip()
             councilor_data['official.name'] = soup.select('h3.title')[1].get_text().encode('utf-8').replace('\xe2\x80\x8b', '').replace('Councilman ','').replace('Councilwoman ','').replace('Vice Mayor ','').strip()
-            councilor_data['office.name'] = 'City ' + soup.select('h3.title')[1].get_text().encode('utf-8').replace('\xe2\x80\x8b', '').strip().split(' ')[0].replace('Vice', "Vice Mayor")
-            councilor_data['address'] = "200 W. Washington St., 11th Floor Phoenix, AZ 85003"
-            councilor_data['website'] = (root_url+page_url)                 
-            councilor_data['phone'] = '602-262-6011'     
-            councilor_data['email'] = root_url + '/district{0}/contact-district-{0}'.format(page_url[-1])
+            councilor_data['electoral.district'] = "Phoenix City Council " + soup.select('h3.title')[0].get_text().encode('utf-8').replace('\r\n','').strip()
+        else:
+            councilor_data['electoral.district'] = "Phoenix City Council District 6"
+            councilor_data['official.name'] = soup.select('h3.title')[0].get_text().encode('utf-8')
+            councilor_data['office.name'] = 'City Councilman District 6'
     except:
-        pass      
+        pass
     return councilor_data 
 
 #creates empty list to store all of the councilor dictionaries
@@ -71,6 +67,26 @@ for page_url in page_urls:
 #adds state
 for dictionary in dictList:
     dictionary['state'] = 'AZ'
+
+
+#scrape mayor page
+def mayor_page():
+    mayor_url = 'https://www.phoenix.gov/mayor'
+    mayor_soup = bs4.BeautifulSoup((requests.get(mayor_url)).text)
+    mayorDict = {}
+    mayorDict['official.name'] = mayor_soup.select('title')[0].get_text().encode('utf-8').replace('\r\n\t','').replace('\r\n', '').replace('Office of ', '')
+    mayorDict['office.name'] = "Mayor"
+    mayorDict['electoral.district'] = "Phoenix"
+    mayorDict['address'] = "200 W. Washington St., 11th Floor Phoenix, AZ 85003"
+    mayorDict['website'] = mayor_url
+    mayorDict['phone'] = '602-262-6011'   
+    mayorDict['state'] = "AZ"
+    dictList.append(mayorDict)
+    return dictList 
+
+mayor_page()
+
+
 
 #creates csv
 fieldnames = ['state','electoral.district','office.name','official.name', 'address','phone','website', 'email', 'party']

@@ -21,35 +21,34 @@ def get_page_urls():
     else:
         response = requests.get(index_url)
         soup = bs4.BeautifulSoup(response.text)
-        return [a.attrs.get('href') for a in soup.select('div.content a[href^=/council]')][1:17]
+        return [a.attrs.get('href') for a in soup.select('div a[href^=http://www.houstontx.gov/council/]')][:16]
 
 #creates a list of all the urls and does an error check on each of them
 page_urls = get_page_urls()
 for page_url in page_urls:
-    if checkURL(root_url + page_url) == 404:
+    if checkURL(page_url) == 404:
         print '404 error. Check the url for {0}'.format(root_url + page_url)
+
 
 #get data from each individual councilor's page
 def get_councilor_data(page_url):
     councilor_data = {}
-    response = requests.get(root_url+page_url)
+    response = requests.get(page_url)
     soup = bs4.BeautifulSoup(response.text)
-    try:
-        if page_url == '/council/b':
-            councilor_data['official.name'] = soup.select('li.leaf')[1].get_text().encode('utf-8').replace("About ", "")
-        else:
-            councilor_data['official.name'] = soup.select('p span.contBold')[0].get_text().replace('Council Member ', '')
-        councilor_data['electoral.district'] = 'Houston City '+soup.select('h1')[0].get_text().encode('utf-8').replace('City', "").strip() 
-        councilor_data['office.name'] = soup.select('h1')[0].get_text().encode('utf-8').replace('Council', 'Council Member').replace('City', "").strip()  
-        councilor_data['address'] = "City Hall Annex 900 Bagby, First Floor Houston, TX 77002"
-        councilor_data['website'] = (root_url+page_url)     
-        if len(soup.select('div.content p')[4].get_text().encode('utf-8').split("FAX")[0].replace("Phone: ", "")) >12:
-                councilor_data['phone'] = "832.393.1100"
-        else:
-          councilor_data['phone'] =   soup.select('div.content')[3].get_text().encode('utf-8').split('\xc2\xa0')[2].replace('\n', '').replace('E-Mail:', '').replace('Phone: ', '')[:12]       
-        councilor_data['email'] = soup.select('div.content a[href^=mailto:]')[0].get_text()
-    except:
-        pass    
+    councilor_data['website'] = page_url
+    councilor_data['address'] = "City Hall Annex 900 Bagby, First Floor Houston, TX 77002"
+    councilor_data['phone'] = "832.393.1100"
+    councilor_data['email'] = [a.attrs.get('href') for a in soup.select('p a[href^=mailto]')][0].replace('mailto:','')
+    if '/council/g' in page_url or '/council/i'in page_url or '/council/1' in page_url:
+        councilor_data['office.name'] = "City " + soup.select('h1')[0].get_text().encode('utf-8').replace('Council', "Council Member")
+        councilor_data['official.name'] = soup.select('p span.contBold')[0].get_text().encode('utf-8').replace('Council Member ', '')
+    else:
+        councilor_data['office.name'] = "City Council Member " + soup.select('h2.deptTitle')[0].get_text().encode('utf-8')
+        councilor_data['official.name'] = soup.select('h3.pageTitle')[0].get_text().encode('utf-8').replace('Council Member ', '')
+    if "At-Large" in councilor_data['office.name']:
+        councilor_data['electoral.district'] = 'Houston'
+    else:
+        councilor_data['electoral.district'] = "Houston " +councilor_data['office.name'].replace('Member ', "")
     return councilor_data 
 
 
@@ -63,6 +62,27 @@ for page_url in page_urls:
 #adds states
 for dictionary in dictList:
     dictionary['state'] = 'TX'
+
+
+#scrape mayor page
+def mayor_page():
+    mayor_url = 'http://www.houstontx.gov/mayor/'
+    mayor_soup = bs4.BeautifulSoup((requests.get(mayor_url)).text)
+    mayorDict = {}
+    mayorDict['official.name'] = mayor_soup.select('h3')[0].get_text().encode('utf-8').replace(', Mayor', '')
+    mayorDict['office.name'] = "Mayor"
+    mayorDict['electoral.district'] = "Houston"
+    mayorDict['address'] = 'City of Houston P.O. Box 1562 Houston, TX 77251'
+    mayorDict['website'] = mayor_url
+    mayorDict['phone'] = '713.837.0311'
+    mayorDict['email'] = 'mayor@houstontx.gov'
+    mayorDict['state'] = "TX"
+    dictList.append(mayorDict)
+    return dictList 
+
+mayor_page()
+
+
 
 #creates csv
 fieldnames = ['state','electoral.district','office.name','official.name', 'address','phone','website', 'email', 'party']

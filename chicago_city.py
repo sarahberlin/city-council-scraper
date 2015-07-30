@@ -68,6 +68,23 @@ for page_url in page_urls:
 for dictionary in dictList:
     dictionary['state'] = 'IL'
 
+#scrape mayor page
+def mayor_page():
+    mayor_url = 'http://www.cityofchicago.org/city/en/depts/mayor.html'
+    mayor_soup = bs4.BeautifulSoup((requests.get(mayor_url)).text)
+    mayorDict = {}
+    mayorDict['official.name'] = mayor_soup.select('h2 span.small')[0].get_text().encode('utf-8').split(',')[0]
+    mayorDict['office.name'] = "Mayor"
+    mayorDict['electoral.district'] = "Chicago"
+    mayorDict['address'] = "121 N LaSalle Street Chicago City Hall 4th Floor Chicago, IL 60602 "
+    mayorDict['website'] = mayor_url 
+    mayorDict['state'] = "IL"
+    dictList.append(mayorDict)
+    return dictList 
+
+mayor_page()
+
+
 
 #creates csv
 fieldnames = ['state','electoral.district','office.name','official.name', 'address','phone','website', 'email', 'party']

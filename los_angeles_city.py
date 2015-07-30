@@ -45,6 +45,25 @@ get_councilor_data()
 for dictionary in dictList:
     dictionary['state'] = 'CA'
 
+#scrape mayor page
+def mayor_page():
+    mayor_url = 'http://www.lamayor.org/'
+    mayor_soup = bs4.BeautifulSoup((requests.get(mayor_url)).text)
+    mayorDict = {}
+    mayorDict['official.name'] = mayor_soup.select('h2')[3].get_text().encode('utf-8')
+    mayorDict['office.name'] = "Mayor"
+    mayorDict['electoral.district'] = "Los Angeles"
+    mayorDict['address'] = '200 N. Spring St. Los Angeles, CA 90012'
+    mayorDict['website'] = mayor_url
+    mayorDict['phone'] = '(213) 978-0600'
+    mayorDict['email'] = 'mayor.garcetti@lacity.org'
+    mayorDict['state'] = "CA"
+    dictList.append(mayorDict)
+    return dictList 
+
+mayor_page()
+
+
 #creates csv
 fieldnames = ['state','electoral.district','office.name','official.name', 'address','phone','website', 'email', 'party']
 los_angeles_council_file = open('los_angeles_council.csv','wb')

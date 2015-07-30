@@ -37,6 +37,27 @@ get_councilor_data()
 for dictionary in dictList:
     dictionary['state'] = 'CA'
 
+
+#scrape mayor page
+def mayor_page():
+    mayor_url = 'http://www.sanjoseca.gov/mayor'
+    mayor_soup = bs4.BeautifulSoup((requests.get(mayor_url)).text)
+    mayorDict = {}
+    mayorDict['official.name'] = mayor_soup.select('div.Headline')[0].get_text().encode('utf-8').split(',')[0].replace('Office of Mayor ','')
+    mayorDict['office.name'] = "Mayor"
+    mayorDict['electoral.district'] = "San Jose"
+    mayorDict['address'] = '200 E. Santa Clara St. San Jose, CA 95113'
+    mayorDict['website'] = 'http://www.sfmayor.org/'
+    mayorDict['phone'] = '408 535-3500 Main'
+    mayorDict['state'] = "CA"
+    dictList.append(mayorDict)
+    return dictList 
+
+mayor_page()
+
+
+
+#makes csv
 fieldnames = ['state','electoral.district','office.name','official.name', 'address','phone','website', 'email', 'party']
 san_jose_council_file = open('san_jose_council.csv','wb')
 csvwriter = csv.DictWriter(san_jose_council_file, delimiter=',', fieldnames=fieldnames)

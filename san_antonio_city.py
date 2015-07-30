@@ -48,7 +48,7 @@ def get_councilor_data(page_url):
             councilor_data['official.name'] = soup.select('title')[0].get_text().encode('utf-8').replace('\r\n','').replace('\t', '').replace('\xc3\x91', 'N').split(', ')[0].title()
             councilor_data['office.name'] = soup.select('title')[0].get_text().encode('utf-8').replace('\r\n','').replace('\t', '').replace('\xc3\x91', 'N').split(', ')[1].title().replace('Council', 'Council Member')
         councilor_data['website'] = (root_url+page_url) 
-        councilor_data['address'] = soup.select('div p')[0].get_text().encode('utf-8').replace('\r\n', ' ').replace(' \n\n', '').replace('\n', ' ').split('Office Line: ')[0]
+        councilor_data['address'] = soup.select('div p')[0].get_text().encode('utf-8').replace('\r\n', ' ').replace(' \n\n', '').replace('\n', ' ').split('Office Line: ')[0].strip()
         councilor_data['phone'] = soup.select('div p')[0].get_text().encode('utf-8').replace('\r\n', ' ').replace(' \n\n', '').replace('\n', ' ').split('Office Line: ')[1][:13]
     except:
         pass
@@ -63,6 +63,27 @@ for page_url in page_urls:
 #adds state
 for dictionary in dictList:
     dictionary['state'] = 'TX'
+
+#scrape mayor page
+def mayor_page():
+    mayor_url = 'https://www.sanantonio.gov/mayor'
+    mayor_soup = bs4.BeautifulSoup((requests.get(mayor_url)).text)
+    mayorDict = {}
+    mayorDict['official.name'] = mayor_soup.select('h1')[0].get_text().encode('utf-8').replace('\n', '')
+    mayorDict['office.name'] = "Mayor"
+    mayorDict['electoral.district'] = "San Antonio"
+    mayorDict['address'] = "City Hall 100 Military Plaza San Antonio, TX 78205"
+    mayorDict['website'] = mayor_url
+    mayorDict['phone'] = '210.207.7083'   
+    mayorDict['state'] = "TX"
+    mayorDict['email'] = [a.attrs.get('href') for a in mayor_soup.select('p a[href^=mailto:]')][0].replace('mailto:', '')
+    dictList.append(mayorDict)
+    return dictList 
+
+mayor_page()
+
+
+
 
 #creates csv
 fieldnames = ['state','electoral.district','office.name','official.name', 'address','phone','website', 'email', 'party']

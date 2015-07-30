@@ -49,6 +49,27 @@ for x in range(0,9):
 for dictionary in dictList:
     dictionary['state'] = 'CA'
 
+
+#scrape mayor page
+def mayor_page():
+    mayor_url = 'http://www.sandiego.gov/mayor/'
+    mayor_soup = bs4.BeautifulSoup((requests.get(mayor_url)).text)
+    mayorDict = {}
+    mayorDict['official.name'] = mayor_soup.select('div h2')[0].get_text().encode('utf-8')
+    mayorDict['office.name'] = "Mayor"
+    mayorDict['electoral.district'] = "San Diego"
+    mayorDict['address'] = "City Administration Building 202 C Street, 11th Floor San Diego, CA 92101"
+    mayorDict['website'] = mayor_url
+    mayorDict['phone'] = '(619) 236-6330'
+    mayorDict['state'] = "CA"
+    mayorDict['email'] = 'kevinfaulconer@sandiego.gov'
+    dictList.append(mayorDict)
+    return dictList 
+
+mayor_page()
+
+
+
 #creates csv
 fieldnames = ['state','electoral.district','office.name','official.name', 'address','phone','website', 'email', 'party']
 san_diego_council_file = open('san_diego_council.csv','wb')

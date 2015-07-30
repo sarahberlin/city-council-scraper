@@ -72,6 +72,25 @@ for page_url in page_urls:
 for dictionary in dictList:
     dictionary['state'] = 'TX'
 
+
+#scrape mayor page
+def mayor_page():
+    mayor_url = 'http://dallascityhall.com/government/citymayor/Pages/default.aspx'
+    mayor_soup = bs4.BeautifulSoup((requests.get(mayor_url)).text)
+    mayorDict = {}
+    mayorDict['official.name'] = mayor_soup.select('title')[0].get_text().encode('utf-8').replace('\r\n', '').replace('\t', '').replace('City of Dallas ', '')
+    mayorDict['office.name'] = "Mayor"
+    mayorDict['electoral.district'] = "Dallas"
+    mayorDict['address'] = "1500 Marilla St. Dallas, TX 75201"
+    mayorDict['website'] = mayor_url
+    mayorDict['phone'] = '214-670-3111'
+    mayorDict['state'] = "TX"
+    dictList.append(mayorDict)
+    return dictList 
+
+mayor_page()
+
+
 #creates csv
 fieldnames = ['state','electoral.district','office.name','official.name', 'address','phone','website', 'email', 'party']
 dallas_council_file = open('dallas_council.csv','wb')

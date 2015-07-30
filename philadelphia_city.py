@@ -47,7 +47,27 @@ get_councilor_data()
 for dictionary in dictList:
     dictionary['state'] = 'PA'
 
+#scrape mayor page
+def mayor_page():
+    mayor_url = 'http://www.phila.gov/Pages/default.aspx'
+    mayor_soup = bs4.BeautifulSoup((requests.get(mayor_url)).text)
+    mayorDict = {}
+    mayorDict['official.name'] = mayor_soup.select('title')[0].get_text().encode('utf-8').replace('\r\n\t','').replace('\r\n', '').split(':')[1].strip()
+    mayorDict['office.name'] = "Mayor"
+    mayorDict['electoral.district'] = "Philadelphia"
+    mayorDict['address'] = 'Office of the Mayor Room 215 City Hall Philadelphia, PA 19107'
+    mayorDict['website'] = 'http://www.phila.gov/mayor/index.html'
+    mayorDict['phone'] = '(215) 686-2181'
+    mayorDict['state'] = "PA"
+    mayorDict['email'] = 'michael.nutter@phila.gov'
+    dictList.append(mayorDict)
+    return dictList 
 
+mayor_page()
+
+
+
+#make csv
 fieldnames = ['state','electoral.district','office.name','official.name', 'address','phone','website', 'email', 'party']
 philadelphia_council_file = open('philadelphia_council.csv','wb')
 csvwriter = csv.DictWriter(philadelphia_council_file, delimiter=',', fieldnames=fieldnames)

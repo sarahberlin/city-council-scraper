@@ -62,6 +62,25 @@ for page_url in page_urls:
 for dictionary in dictList:
     dictionary['state'] = 'NC'
 
+#scrape mayor page
+def mayor_page():
+    mayor_url = 'http://charmeck.org/city/charlotte/Mayor/Pages/MeetTheMayor.aspx'  
+    mayor_soup = bs4.BeautifulSoup((requests.get(mayor_url)).text)
+    mayorDict = {}
+    mayorDict['official.name'] = mayor_soup.select('title')[0].get_text().encode('utf-8').replace('\r\n', '').replace('\t', '')
+    mayorDict['office.name'] = "Mayor"
+    mayorDict['electoral.district'] = "Charlotte"
+    mayorDict['address'] =  '600 East Fourth Street, 15th Floor Charlotte, NC 28202' 
+    mayorDict['email'] = 'mayor@charlottenc.gov'
+    mayorDict['phone'] = '704-336-2241'
+    mayorDict['website'] = mayor_url 
+    mayorDict['state'] = "NC"
+    dictList.append(mayorDict)
+    return dictList 
+
+mayor_page()
+
+
 #creates csv
 fieldnames = ['state','electoral.district','office.name','official.name', 'address','phone','website', 'email', 'party']
 charlotte_council_file = open('charlotte_council.csv','wb')

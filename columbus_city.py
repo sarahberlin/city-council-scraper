@@ -38,10 +38,29 @@ def get_councilor_data():
 
 get_councilor_data()
 
-
+#adds state
 for dictionary in dictList:
     dictionary['state'] = 'OH'
 
+#scrape mayor page
+def mayor_page():
+    mayor_url = 'http://www.columbus.gov/Templates/Detail.aspx?id=66058'
+    mayor_soup = bs4.BeautifulSoup((requests.get(mayor_url)).text)
+    mayorDict = {}
+    mayorDict['official.name'] = mayor_soup.select('p strong')[0].get_text().encode('utf-8')
+    mayorDict['office.name'] = "Mayor"
+    mayorDict['electoral.district'] = "Columbus"
+    mayorDict['address'] = 'City Hall 2nd Floor 90 West Broad Street Columbus, OH 43215'
+    mayorDict['website'] = mayor_url
+    mayorDict['phone'] = '614-645-7671'
+    mayorDict['email'] = '311@columbus.gov'
+    mayorDict['state'] = "OH"
+    dictList.append(mayorDict)
+    return dictList 
+
+mayor_page()
+
+#makes csv
 fieldnames = ['state','electoral.district','office.name','official.name', 'address','phone','website', 'email', 'party']
 columbus_council_file = open('columbus_council.csv','wb')
 csvwriter = csv.DictWriter(columbus_council_file, delimiter=',', fieldnames=fieldnames)

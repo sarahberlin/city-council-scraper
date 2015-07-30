@@ -65,6 +65,24 @@ for page_url in page_urls:
 for dictionary in dictList:
     dictionary['state'] = 'CA'
 
+#scrape mayor page
+def mayor_page():
+    mayor_url = 'http://www.sfmayor.org/index.aspx?page=858'
+    mayor_soup = bs4.BeautifulSoup((requests.get(mayor_url)).text)
+    mayorDict = {}
+    mayorDict['official.name'] = mayor_soup.select('h2')[0].get_text().encode('utf-8').split(',')[0]
+    mayorDict['office.name'] = "Mayor"
+    mayorDict['electoral.district'] = "San Francisco"
+    mayorDict['address'] = "City Hall, Room 200, 1 Dr. Carlton B. Goodlett Place, San Francisco, CA 94102"
+    mayorDict['website'] = 'http://www.sfmayor.org/'
+    mayorDict['phone'] = '415-554-6141'
+    mayorDict['state'] = "CA"
+    dictList.append(mayorDict)
+    return dictList 
+
+mayor_page()
+
+
 #creates csv
 fieldnames = ['state','electoral.district','office.name','official.name', 'address','phone','website', 'email', 'party']
 san_francisco_council_file = open('san_francisco_council.csv','wb')

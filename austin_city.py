@@ -77,6 +77,22 @@ for tempDict in name_and_district_list:
         if tempDict['district'] == dictionary['electoral.district']:
             dictionary['official.name'] = tempDict['name']
 
+#scrape mayor page
+def mayor_page():
+    mayor_url = 'https://www.austintexas.gov/department/mayor'  
+    mayor_soup = bs4.BeautifulSoup((requests.get(mayor_url)).text)
+    mayorDict = {}
+    mayorDict['official.name'] =  [img.attrs.get('alt') for img in mayor_soup.select('p img[alt]')][0].replace("Mayor ", "")
+    mayorDict['office.name'] = "Mayor"
+    mayorDict['electoral.district'] = "Austin"
+    mayorDict['address'] =  '301 W 2nd St Austin, 78701' 
+    mayorDict['phone'] = '512-978-2100'
+    mayorDict['website'] = mayor_url 
+    mayorDict['state'] = "TX"
+    dictList.append(mayorDict)
+    return dictList 
+
+mayor_page()
 
 #creates csv
 fieldnames = ['state','electoral.district','office.name','official.name', 'address','phone','website', 'email', 'party']

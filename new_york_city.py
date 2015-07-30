@@ -86,6 +86,25 @@ for page_url in page_urls:
 for dictionary in dictList:
     dictionary['state'] = 'NY'
 
+#scrape mayor page
+def mayor_page():
+    mayor_url = 'http://www1.nyc.gov/office-of-the-mayor/index.page'
+    mayor_soup = bs4.BeautifulSoup((requests.get(mayor_url)).text)
+    mayorDict = {}
+    mayorDict['official.name'] = mayor_soup.select('h3')[0].get_text().encode('utf-8')
+    mayorDict['office.name'] = "Mayor"
+    mayorDict['electoral.district'] = "New York City"
+    mayorDict['address'] = 'City Hall New York, NY 10007'
+    mayorDict['website'] = mayor_url
+    mayorDict['phone'] = '212-NEW-YORK'
+    mayorDict['state'] = "NY"
+    dictList.append(mayorDict)
+    return dictList 
+
+mayor_page()
+
+
+
 #creates csv
 fieldnames = ['state','electoral.district','office.name','official.name', 'address','phone','website', 'email', 'party']
 new_york_city_council_file = open('new_york_city_council.csv','wb')

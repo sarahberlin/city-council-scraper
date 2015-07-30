@@ -59,6 +59,24 @@ for page_url in page_urls:
 for dictionary in dictList:
     dictionary['state'] = 'IN'
 
+#scrape mayor page
+def mayor_page():
+    mayor_url = 'http://www.indy.gov/eGov/mayor/Pages/home.aspx'
+    mayor_soup = bs4.BeautifulSoup((requests.get(mayor_url)).text)
+    mayorDict = {}
+    mayorDict['official.name'] = mayor_soup.select('h6')[0].get_text().encode('utf-8').replace('Office of the Mayor', '')
+    mayorDict['office.name'] = "Mayor"
+    mayorDict['electoral.district'] = "Indianapolis"
+    mayorDict['address'] = '200 East Washington Street Indianapolis, Indiana 46204'
+    mayorDict['website'] = mayor_url
+    mayorDict['phone'] = '(317) 327-3601'
+    mayorDict['state'] = "IN"
+    dictList.append(mayorDict)
+    return dictList 
+
+mayor_page()
+
+
 #creates csv
 fieldnames = ['state','electoral.district','office.name','official.name', 'address','phone','website', 'email', 'party']
 indianapolis_council_file = open('indianapolis_council.csv','wb')

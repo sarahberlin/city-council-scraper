@@ -60,6 +60,26 @@ get_councilor_data2()
 for dictionary in dictList:
     dictionary['state'] = 'FL'
 
+#scrape mayor page
+def mayor_page():
+    mayor_url = 'http://www.coj.net/mayor.aspx'
+    mayor_soup = bs4.BeautifulSoup((requests.get(mayor_url)).text)
+    mayorDict = {}
+    mayorDict['official.name'] = mayor_soup.select('h1')[0].get_text().encode('utf-8').replace('Office of Mayor ','').replace('\r\n', '').strip()
+    mayorDict['office.name'] = "Mayor"
+    mayorDict['electoral.district'] = "Jacksonville"
+    mayorDict['address'] = 'City Hall at St. James Building 117 W. Duval St.  Suite 400 Jacksonville, FL  32202'
+    mayorDict['website'] = mayor_url
+    mayorDict['phone'] = '(904) 630-1776'
+    mayorDict['email'] = 'MayorLennyCurry@coj.net'
+    mayorDict['state'] = "FL"
+    dictList.append(mayorDict)
+    return dictList 
+
+mayor_page()
+
+
+
 fieldnames = ['state','electoral.district','office.name','official.name', 'address','phone','website', 'email', 'party']
 jacksonville_council_file = open('jacksonville_council.csv','wb')
 csvwriter = csv.DictWriter(jacksonville_council_file, delimiter=',', fieldnames=fieldnames)
