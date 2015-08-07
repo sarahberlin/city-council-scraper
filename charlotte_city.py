@@ -25,36 +25,34 @@ def get_page_urls():
         soup = bs4.BeautifulSoup(response.text)
         return [a.attrs.get('href') for a in soup.select('p a[href^=/city/charlotte/CityCouncil/MeettheCouncil]')][1:]
 
-#creates a list of all the urls and does an error check on each of them
-page_urls = get_page_urls()
-for page_url in page_urls:
-    if checkURL(root_url + page_url) == 404:
-        print '404 error. Check the url for {0}'.format(root_url + page_url)
-
 #get data from each individual councilor's page
 def get_councilor_data(page_url):
-    councilor_data = {}
-    response = requests.get(root_url+page_url)
-    soup = bs4.BeautifulSoup(response.text)
-    try:
-        councilor_data['official.name'] = soup.select('div.heading')[0].get_text().encode('utf-8').replace('\r\n\t\t\t', '').replace('\t', '').split(',')[0]
-        councilor_data['office.name'] = "City Council "+soup.select('div.heading')[0].get_text().encode('utf-8').replace('\r\n\t\t\t', '').replace('\t', '').split(',')[1].strip()
-        councilor_data['email'] = soup.select('a[href^=mailto]')[0].get_text().encode('utf-8').replace(' \n', '')
-        councilor_data['website'] = (root_url+page_url)
-        councilor_data['address'] = '600 E. 4th Street Charlotte, NC 28202'
-        councilor_data['phone'] ='704-336-2241'
-        if 'At-Large' in soup.select('div.heading')[0].get_text().encode('utf-8').replace('\r\n\t\t\t', '').replace('\t', '').split(',')[1].strip():
-            councilor_data['electoral.district'] = "Charlotte"
-        else:
-            councilor_data['electoral.district'] = "Charlotte City Council "+soup.select('div.heading')[0].get_text().encode('utf-8').replace('\r\n\t\t\t', '').replace('\t', '').split(',')[1].strip().replace(' Representative','')
-    except:
-        pass    
-    return councilor_data
+    if checkURL(root_url+page_url) == 404:
+        print '404 error. Check the url for {0}'.format(root_url+page_url)
+    else:
+        councilor_data = {}
+        response = requests.get(root_url+page_url)
+        soup = bs4.BeautifulSoup(response.text)
+        try:
+            councilor_data['official.name'] = soup.select('div.heading')[0].get_text().encode('utf-8').replace('\r\n\t\t\t', '').replace('\t', '').split(',')[0]
+            councilor_data['office.name'] = "City Council "+soup.select('div.heading')[0].get_text().encode('utf-8').replace('\r\n\t\t\t', '').replace('\t', '').split(',')[1].strip()
+            councilor_data['email'] = soup.select('a[href^=mailto]')[0].get_text().encode('utf-8').replace(' \n', '')
+            councilor_data['website'] = (root_url+page_url)
+            councilor_data['address'] = '600 E. 4th Street Charlotte, NC 28202'
+            councilor_data['phone'] ='704-336-2241'
+            if 'At-Large' in soup.select('div.heading')[0].get_text().encode('utf-8').replace('\r\n\t\t\t', '').replace('\t', '').split(',')[1].strip():
+                councilor_data['electoral.district'] = "Charlotte"
+            else:
+                councilor_data['electoral.district'] = "Charlotte City Council "+soup.select('div.heading')[0].get_text().encode('utf-8').replace('\r\n\t\t\t', '').replace('\t', '').split(',')[1].strip().replace(' Representative','')
+        except:
+            pass    
+        return councilor_data
 
 #creates empty list to store all of the councilor dictionaries
 dictList = []
 
 #run the functions together
+page_urls = get_page_urls()
 for page_url in page_urls:
     dictList.append(get_councilor_data(page_url)) 
 
@@ -65,18 +63,21 @@ for dictionary in dictList:
 #scrape mayor page
 def mayor_page():
     mayor_url = 'http://charmeck.org/city/charlotte/Mayor/Pages/MeetTheMayor.aspx'  
-    mayor_soup = bs4.BeautifulSoup((requests.get(mayor_url)).text)
-    mayorDict = {}
-    mayorDict['official.name'] = mayor_soup.select('title')[0].get_text().encode('utf-8').replace('\r\n', '').replace('\t', '')
-    mayorDict['office.name'] = "Mayor"
-    mayorDict['electoral.district'] = "Charlotte"
-    mayorDict['address'] =  '600 East Fourth Street, 15th Floor Charlotte, NC 28202' 
-    mayorDict['email'] = 'mayor@charlottenc.gov'
-    mayorDict['phone'] = '704-336-2241'
-    mayorDict['website'] = mayor_url 
-    mayorDict['state'] = "NC"
-    dictList.append(mayorDict)
-    return dictList 
+    if checkURL(mayor_url) == 404:
+        print '404 error. Check the url for {0}'.format(mayor_url)
+    else:
+        mayor_soup = bs4.BeautifulSoup((requests.get(mayor_url)).text)
+        mayorDict = {}
+        mayorDict['official.name'] = mayor_soup.select('title')[0].get_text().encode('utf-8').replace('\r\n', '').replace('\t', '')
+        mayorDict['office.name'] = "Mayor"
+        mayorDict['electoral.district'] = "Charlotte"
+        mayorDict['address'] =  '600 East Fourth Street, 15th Floor Charlotte, NC 28202' 
+        mayorDict['email'] = 'mayor@charlottenc.gov'
+        mayorDict['phone'] = '704-336-2241'
+        mayorDict['website'] = mayor_url 
+        mayorDict['state'] = "NC"
+        dictList.append(mayorDict)
+        return dictList 
 
 mayor_page()
 

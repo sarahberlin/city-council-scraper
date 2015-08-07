@@ -5,7 +5,14 @@ from csv import DictWriter
 
 root_url = 'http://www.indy.gov'
 index_url = root_url + '/eGov/Council/Councillors/Biography/Pages/home.aspx'
-   
+
+def checkURL(x):
+    try:
+        code = urllib2.urlopen(x).code
+    except:
+        code = 404
+    return code
+
 #get page urls of all the councilors
 def get_page_urls():
     response = requests.get(index_url)

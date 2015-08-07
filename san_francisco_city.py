@@ -18,6 +18,7 @@ root_url = 'http://www.sfbos.org/'
 #if checkURL(root_url) == 404:
     #print '404 error. Check the url for {0}'.format(root_url)
 
+
 #get page urls of all the councilors
 page_urls = []
 def get_page_urls():
@@ -28,12 +29,6 @@ def get_page_urls():
             a = ul.findAll('a')[x]
             page_urls.append(a.attrs['href'])
     return page_urls
-
-#creates a list of all the urls and does an error check on each of them
-get_page_urls()
-#for page_url in page_urls:
-    #if checkURL(root_url + page_url) == 404:
-        #print '404 error. Check the url for {0}'.format(root_url + page_url)
 
 #get data from each individual councilor's page
 def get_councilor_data(page_url):
@@ -58,6 +53,7 @@ def get_councilor_data(page_url):
 dictList = []
 
 #run the functions together
+get_page_urls()
 for page_url in page_urls:
     dictList.append(get_councilor_data(page_url)) 
 
@@ -78,7 +74,7 @@ def mayor_page():
     mayorDict['phone'] = '415-554-6141'
     mayorDict['state'] = "CA"
     dictList.append(mayorDict)
-    return dictList 
+    return dictList
 
 mayor_page()
 

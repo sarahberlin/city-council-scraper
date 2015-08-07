@@ -23,41 +23,39 @@ def get_page_urls():
         soup = bs4.BeautifulSoup(response.text)
         return [a.attrs.get('href') for a in soup.select('div a[href^=http://www.houstontx.gov/council/]')][:16]
 
-#creates a list of all the urls and does an error check on each of them
-page_urls = get_page_urls()
-for page_url in page_urls:
-    if checkURL(page_url) == 404:
-        print '404 error. Check the url for {0}'.format(root_url + page_url)
-
-
 #get data from each individual councilor's page
 def get_councilor_data(page_url):
-    councilor_data = {}
-    response = requests.get(page_url)
-    soup = bs4.BeautifulSoup(response.text)
-    councilor_data['website'] = page_url
-    councilor_data['address'] = "City Hall Annex 900 Bagby, First Floor Houston, TX 77002"
-    councilor_data['phone'] = "832.393.1100"
-    councilor_data['email'] = [a.attrs.get('href') for a in soup.select('p a[href^=mailto]')][0].replace('mailto:','')
-    if '/council/g' in page_url or '/council/i'in page_url or '/council/1' in page_url:
-        councilor_data['office.name'] = "City " + soup.select('h1')[0].get_text().encode('utf-8').replace('Council', "Council Member")
-        councilor_data['official.name'] = soup.select('p span.contBold')[0].get_text().encode('utf-8').replace('Council Member ', '')
+    if checkURL(page_url) == 404:
+        print '404 error. Check the url for {0}'.format(root_url + page_url)
     else:
-        councilor_data['office.name'] = "City Council Member " + soup.select('h2.deptTitle')[0].get_text().encode('utf-8')
-        councilor_data['official.name'] = soup.select('h3.pageTitle')[0].get_text().encode('utf-8').replace('Council Member ', '')
-    if "At-Large" in councilor_data['office.name']:
-        councilor_data['electoral.district'] = 'Houston'
-    else:
-        councilor_data['electoral.district'] = "Houston " +councilor_data['office.name'].replace('Member ', "")
-    return councilor_data 
+        councilor_data = {}
+        response = requests.get(page_url)
+        soup = bs4.BeautifulSoup(response.text)
+        councilor_data['website'] = page_url
+        councilor_data['address'] = "City Hall Annex 900 Bagby, First Floor Houston, TX 77002"
+        councilor_data['phone'] = "832.393.1100"
+        councilor_data['email'] = [a.attrs.get('href') for a in soup.select('p a[href^=mailto]')][0].replace('mailto:','')
+        if '/council/i'in page_url or '/council/1' in page_url:
+            councilor_data['office.name'] = "City " + soup.select('h1')[0].get_text().encode('utf-8')
+            councilor_data['official.name'] = soup.select('p span.contBold')[0].get_text().encode('utf-8').replace('Council Member ', '')
+        else:
+            councilor_data['office.name'] = "City Council Member " + soup.select('h2.deptTitle')[0].get_text().encode('utf-8')
+            councilor_data['official.name'] = soup.select('h3.pageTitle')[0].get_text().encode('utf-8').replace('Council Member ', '')
+        if "At-Large" in councilor_data['office.name']:
+            councilor_data['electoral.district'] = 'Houston'
+        else:
+            councilor_data['electoral.district'] = "Houston " +councilor_data['office.name'].replace('Member ', "")
+        return councilor_data 
 
 
 #creates empty list to store all of the councilor dictionaries
 dictList = []
 
 #run the functions together
+page_urls = get_page_urls()
 for page_url in page_urls:
     dictList.append(get_councilor_data(page_url)) 
+
 
 #adds states
 for dictionary in dictList:
@@ -67,18 +65,21 @@ for dictionary in dictList:
 #scrape mayor page
 def mayor_page():
     mayor_url = 'http://www.houstontx.gov/mayor/'
-    mayor_soup = bs4.BeautifulSoup((requests.get(mayor_url)).text)
-    mayorDict = {}
-    mayorDict['official.name'] = mayor_soup.select('h3')[0].get_text().encode('utf-8').replace(', Mayor', '')
-    mayorDict['office.name'] = "Mayor"
-    mayorDict['electoral.district'] = "Houston"
-    mayorDict['address'] = 'City of Houston P.O. Box 1562 Houston, TX 77251'
-    mayorDict['website'] = mayor_url
-    mayorDict['phone'] = '713.837.0311'
-    mayorDict['email'] = 'mayor@houstontx.gov'
-    mayorDict['state'] = "TX"
-    dictList.append(mayorDict)
-    return dictList 
+    if checkURL(mayor_url) == 404:
+        print '404 error. Check the url for {0}'.format(mayor_url)
+    else:
+        mayor_soup = bs4.BeautifulSoup((requests.get(mayor_url)).text)
+        mayorDict = {}
+        mayorDict['official.name'] = mayor_soup.select('h3')[0].get_text().encode('utf-8').replace(', Mayor', '')
+        mayorDict['office.name'] = "Mayor"
+        mayorDict['electoral.district'] = "Houston"
+        mayorDict['address'] = 'City of Houston P.O. Box 1562 Houston, TX 77251'
+        mayorDict['website'] = mayor_url
+        mayorDict['phone'] = '713.837.0311'
+        mayorDict['email'] = 'mayor@houstontx.gov'
+        mayorDict['state'] = "TX"
+        dictList.append(mayorDict)
+        return dictList 
 
 mayor_page()
 

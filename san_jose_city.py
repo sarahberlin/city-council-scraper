@@ -16,21 +16,21 @@ response = requests.get(root_url)
 soup = bs4.BeautifulSoup(response.text)
 dictList = []
 
-#runs error check on root_url
-if checkURL(root_url) == 404:
-    print '404 error. Check the url for {0}'.format(root_url)
 
 def get_councilor_data():
-    for x in range(1,11):
-        cData = {}
-        cData['official.name']=soup.select('span.Subhead2')[x].get_text().encode('utf-8').split(", ")[0]
-        cData['electoral.district']='San Jose City Council '+soup.select('span.Subhead2')[x].get_text().encode('utf-8').split(", ")[1]
-        cData['office.name']= 'City Councilmember '+soup.select('span.Subhead2')[x].get_text().encode('utf-8').split(", ")[1]
-        cData['phone']= soup.select('tbody tr td')[x].get_text().split('\n')[1].encode('utf-8').replace('            Ph: ', '')
-        cData['address']= '200 E. Santa Clara St. San Jose, CA 95113'
-        cData['website']= 'http://www.sanjoseca.gov/council'
-        cData['email']=  'district{0}@sanjoseca.gov'.format(x)
-        dictList.append(cData)
+    if checkURL(root_url) == 404:
+        print '404 error. Check the url for {0}'.format(root_url)
+    else:
+        for x in range(1,11):
+            cData = {}
+            cData['official.name']=soup.select('span.Subhead2')[x].get_text().encode('utf-8').split(", ")[0]
+            cData['electoral.district']='San Jose City Council '+soup.select('span.Subhead2')[x].get_text().encode('utf-8').split(", ")[1]
+            cData['office.name']= 'City Councilmember '+soup.select('span.Subhead2')[x].get_text().encode('utf-8').split(", ")[1]
+            cData['phone']= soup.select('tbody tr td')[x].get_text().split('\n')[1].encode('utf-8').replace('            Ph: ', '')
+            cData['address']= '200 E. Santa Clara St. San Jose, CA 95113'
+            cData['website']= 'http://www.sanjoseca.gov/council'
+            cData['email']=  'district{0}@sanjoseca.gov'.format(x)
+            dictList.append(cData)
 
 get_councilor_data()
 
@@ -41,17 +41,20 @@ for dictionary in dictList:
 #scrape mayor page
 def mayor_page():
     mayor_url = 'http://www.sanjoseca.gov/mayor'
-    mayor_soup = bs4.BeautifulSoup((requests.get(mayor_url)).text)
-    mayorDict = {}
-    mayorDict['official.name'] = mayor_soup.select('div.Headline')[0].get_text().encode('utf-8').split(',')[0].replace('Office of Mayor ','')
-    mayorDict['office.name'] = "Mayor"
-    mayorDict['electoral.district'] = "San Jose"
-    mayorDict['address'] = '200 E. Santa Clara St. San Jose, CA 95113'
-    mayorDict['website'] = 'http://www.sfmayor.org/'
-    mayorDict['phone'] = '408 535-3500 Main'
-    mayorDict['state'] = "CA"
-    dictList.append(mayorDict)
-    return dictList 
+    if checkURL(mayor_url) == 404:
+        print '404 error. Check the url for {0}'.format(mayor_url)
+    else:
+        mayor_soup = bs4.BeautifulSoup((requests.get(mayor_url)).text)
+        mayorDict = {}
+        mayorDict['official.name'] = mayor_soup.select('div.Headline')[0].get_text().encode('utf-8').split(',')[0].replace('Office of Mayor ','')
+        mayorDict['office.name'] = "Mayor"
+        mayorDict['electoral.district'] = "San Jose"
+        mayorDict['address'] = '200 E. Santa Clara St. San Jose, CA 95113'
+        mayorDict['website'] = 'http://www.sfmayor.org/'
+        mayorDict['phone'] = '408 535-3500 Main'
+        mayorDict['state'] = "CA"
+        dictList.append(mayorDict)
+        return dictList
 
 mayor_page()
 

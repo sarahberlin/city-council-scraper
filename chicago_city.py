@@ -23,44 +23,42 @@ def get_page_urls():
         soup = bs4.BeautifulSoup(response.text)    
         return [a.attrs.get('href') for a in soup.select('h4 a[href]')][1:]
 
-#creates a list of all the urls and does an error check on each of them
-page_urls = get_page_urls()
-for page_url in page_urls:
-    if checkURL(root_url + page_url) == 404:
-        print '404 error. Check the url for {0}'.format(root_url + page_url)
-
 #get data from each individual councilor's page
 def get_councilor_data(page_url):
-    councilor_data = {}
-    response = requests.get(root_url + page_url)
-    soup = bs4.BeautifulSoup(response.text)
-    try:
-        if len(soup.select('tr td')[3].get_text().encode('utf-8')) == 12:
-            councilor_data['phone'] = soup.select('tr td')[3].get_text().encode('utf-8')
-        else:
-            councilor_data['phone'] = '312.744.5000'
-        councilor_data['address'] = '121 N. LaSalle Street Chicago, Illinois 60602'
+    if checkURL(root_url+page_url) == 404:
+        print '404 error. Check the url for {0}'.format(root_url+page_url)
+    else:
+        councilor_data = {}
+        response = requests.get(root_url + page_url)
+        soup = bs4.BeautifulSoup(response.text)
         try:
-            if "Chicago" in soup.select('tr td')[7].get_text().encode('utf-8'):
-                councilor_data['address'] = soup.select('tr td')[7].get_text().encode('utf-8').replace('\n', '')
+            if len(soup.select('tr td')[3].get_text().encode('utf-8')) == 12:
+                councilor_data['phone'] = soup.select('tr td')[3].get_text().encode('utf-8')
             else:
-                councilor_data['address'] = '121 N. LaSalle Street Chicago, Illinois 60602'
+                councilor_data['phone'] = '312.744.5000'
+            councilor_data['address'] = '121 N. LaSalle Street Chicago, Illinois 60602'
+            try:
+                if "Chicago" in soup.select('tr td')[7].get_text().encode('utf-8'):
+                    councilor_data['address'] = soup.select('tr td')[7].get_text().encode('utf-8').replace('\n', '')
+                else:
+                    councilor_data['address'] = '121 N. LaSalle Street Chicago, Illinois 60602'
+            except:
+                pass
+            councilor_data['office.name'] = "Alderman "+soup.find_all('h1')[0].get_text().encode('utf-8')
+            councilor_data['electoral.district'] = "Chicago City Council District " + soup.find_all('h1')[0].get_text().encode('utf-8').replace('Ward ', '')
+            councilor_data['official.name'] = soup.select('h3')[2].get_text().encode('utf-8').replace('Alderman', '').strip()
+            councilor_data['website'] = (root_url + page_url).encode('utf-8')
+            councilor_data['email'] = [a.attrs.get('href') for a in soup.select('td a[href]')][0].encode('utf-8').replace('mailto:','')
         except:
             pass
-        councilor_data['office.name'] = "Alderman "+soup.find_all('h1')[0].get_text().encode('utf-8')
-        councilor_data['electoral.district'] = "Chicago City Council District " + soup.find_all('h1')[0].get_text().encode('utf-8').replace('Ward ', '')
-        councilor_data['official.name'] = soup.select('h3')[2].get_text().encode('utf-8').replace('Alderman', '').strip()
-        councilor_data['website'] = (root_url + page_url).encode('utf-8')
-        councilor_data['email'] = [a.attrs.get('href') for a in soup.select('td a[href]')][0].encode('utf-8').replace('mailto:','')
-    except:
-        pass
-    return councilor_data
+        return councilor_data
 
 
 #creates empty list to store all of the councilor dictionaries
 dictList = []
 
 #run the functions together
+page_urls = get_page_urls()
 for page_url in page_urls:
     dictList.append(get_councilor_data(page_url))
 
@@ -71,16 +69,19 @@ for dictionary in dictList:
 #scrape mayor page
 def mayor_page():
     mayor_url = 'http://www.cityofchicago.org/city/en/depts/mayor.html'
-    mayor_soup = bs4.BeautifulSoup((requests.get(mayor_url)).text)
-    mayorDict = {}
-    mayorDict['official.name'] = mayor_soup.select('h2 span.small')[0].get_text().encode('utf-8').split(',')[0]
-    mayorDict['office.name'] = "Mayor"
-    mayorDict['electoral.district'] = "Chicago"
-    mayorDict['address'] = "121 N LaSalle Street Chicago City Hall 4th Floor Chicago, IL 60602 "
-    mayorDict['website'] = mayor_url 
-    mayorDict['state'] = "IL"
-    dictList.append(mayorDict)
-    return dictList 
+    if checkURL(mayor_url) == 404:
+        print '404 error. Check the url for {0}'.format(mayor_url)
+    else:
+        mayor_soup = bs4.BeautifulSoup((requests.get(mayor_url)).text)
+        mayorDict = {}
+        mayorDict['official.name'] = mayor_soup.select('h2 span.small')[0].get_text().encode('utf-8').split(',')[0]
+        mayorDict['office.name'] = "Mayor"
+        mayorDict['electoral.district'] = "Chicago"
+        mayorDict['address'] = "121 N LaSalle Street Chicago City Hall 4th Floor Chicago, IL 60602 "
+        mayorDict['website'] = mayor_url 
+        mayorDict['state'] = "IL"
+        dictList.append(mayorDict)
+        return dictList 
 
 mayor_page()
 
