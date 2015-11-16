@@ -35,12 +35,8 @@ def get_councilor_data(page_url):
         councilor_data['address'] = "City Hall Annex 900 Bagby, First Floor Houston, TX 77002"
         councilor_data['phone'] = "832.393.1100"
         councilor_data['email'] = [a.attrs.get('href') for a in soup.select('p a[href^=mailto]')][0].replace('mailto:','')
-        if '/council/i'in page_url or '/council/1' in page_url:
-            councilor_data['office.name'] = "City " + soup.select('h1')[0].get_text().encode('utf-8')
-            councilor_data['official.name'] = soup.select('p span.contBold')[0].get_text().encode('utf-8').replace('Council Member ', '')
-        else:
-            councilor_data['office.name'] = "City Council Member " + soup.select('h2.deptTitle')[0].get_text().encode('utf-8')
-            councilor_data['official.name'] = soup.select('h3.pageTitle')[0].get_text().encode('utf-8').replace('Council Member ', '')
+        councilor_data['office.name'] = "City Council Member " + soup.select('h2.deptTitle')[0].get_text().encode('utf-8')
+        councilor_data['official.name'] = soup.select('h3.pageTitle')[0].get_text().encode('utf-8').replace('Council Member ', '')
         if "At-Large" in councilor_data['office.name']:
             councilor_data['electoral.district'] = 'Houston'
         else:

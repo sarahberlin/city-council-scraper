@@ -41,9 +41,9 @@ def get_councilor_data(page_url):
                 councilor_data['address'] = soup.select('li.deptAddress')[0].get_text().encode('utf-8').replace('Dallas', ' Dallas').replace(' Dallas City', 'Dallas City').replace('Hall', 'Hall ').replace("Phone: ", "*").replace(" Fax: ", "*").split("*")[0]
                 councilor_data['phone'] = soup.select('li.deptAddress')[0].get_text().encode('utf-8').replace('Dallas', ' Dallas').replace(' Dallas City', 'Dallas City').replace('Hall', 'Hall ').replace("Phone: ", "*").replace(" Fax: ", "*").split("*")[1]
             elif page_url == '/government/citycouncil/district14/':
-                councilor_data['electoral.district'] = "Dallas "+soup.select('div h1')[3].get_text().encode('utf-8')
-                councilor_data['official.name'] =soup.select('div h1')[2].get_text().encode('utf-8').replace('Council Member ', '')
-                councilor_data['office.name'] = soup.select('div h1')[3].get_text().encode('utf-8')
+                councilor_data['electoral.district'] = "Dallas City Council "+soup.select('div h1')[0].get_text().encode('utf-8')
+                councilor_data['official.name'] =soup.select('h1 span')[0].get_text().encode('utf-8').replace('Council Member ', '')
+                councilor_data['office.name'] = "City Council "+soup.select('div h1')[0].get_text().encode('utf-8')
                 councilor_data['website'] =  root_url + page_url
                 councilor_data['address'] = soup.select('li.deptAddress')[0].get_text().encode('utf-8').replace('Dallas', ' Dallas').replace(' Dallas City', 'Dallas City').replace('Hall', 'Hall ').replace("Phone: ", "*").replace(" Fax: ", "*").split("*")[0]
                 councilor_data['phone'] = soup.select('li.deptAddress')[0].get_text().encode('utf-8').replace('Dallas', ' Dallas').replace(' Dallas City', 'Dallas City').replace('Hall', 'Hall ').replace("Phone: ", "*").replace(" Fax: ", "*").split("*")[1]
