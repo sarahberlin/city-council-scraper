@@ -24,7 +24,7 @@ def get_councilor_data():
     else:
         for x in range (0, 17):
     		newDict = {}
-    		newDict['official.name']=  soup.select('div.one_half')[x].get_text().encode('utf-8').replace('\n\n\n','').replace('Johnson\n', 'Johnson').replace('\n\n','').replace('\nMaria', 'Maria').replace("\xe2\x80\x99", "'").replace('\xc2\xa0', '').replace("\xc3\xb1", "n").replace('\xc3\xa1', 'a').split('\n')[0]
+    		newDict['official.name']=  soup.select('div.one_half')[x].get_text().encode('utf-8').replace('\n\n\n','').replace('Johnson\n', 'Johnson').replace('\n\n','').replace('\xc2\xa0','').replace('\nMaria', 'Maria').replace("\xe2\x80\x99", "'").replace('\n\xc2\xa0\n', '').replace("\xc3\xb1", "n").replace('\xc3\xa1', 'a').replace('\nVacant\n\n','Vacant').split('\n')[0].strip()
     		newDict['website']= root_url
     		if x == 16:
     			newDict['office.name']= 'City Council Member '+'At-Large'
@@ -39,6 +39,8 @@ def get_councilor_data():
     			newDict['electoral.district'] = 'Philadelphia'
     			newDict['address'] = soup.select('div.one_half')[x].get_text().encode('utf-8').replace('\n\n\n','').replace('Johnson\n', 'Johnson').replace('\n\n','').replace('\nMaria', 'Maria').replace("\xe2\x80\x99", "'").replace('\xc2\xa0', '').replace("\xc3\xb1", "n").replace('\xc3\xa1', 'a').split('\n')[1]+ ' '+soup.select('div.one_half')[x].get_text().encode('utf-8').replace('\n\n\n','').replace('Johnson\n', 'Johnson').replace('\n\n','').replace('\nMaria', 'Maria').replace("\xe2\x80\x99", "'").replace('\xc2\xa0', '').replace("\xc3\xb1", "n").replace('\xc3\xa1', 'a').split('\n')[2]
     			newDict['phone'] = soup.select('div.one_half')[x].get_text().encode('utf-8').replace('\n\n\n','').replace('Johnson\n', 'Johnson').replace('\n\n','').replace('\nMaria', 'Maria').replace("\xe2\x80\x99", "'").replace('\xc2\xa0', '').replace("\xc3\xb1", "n").replace('\xc3\xa1', 'a').split('\n')[3].split(',')[0]
+                if newDict['official.name']== 'Vacant':
+                    newDict['address'] = ''
     		dictList.append(newDict)
 
 

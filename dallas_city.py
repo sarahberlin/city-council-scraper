@@ -35,7 +35,7 @@ def get_councilor_data(page_url):
         try:        
             if page_url == '/government/citycouncil/district6/':
                 councilor_data['electoral.district'] = "Dallas "+soup.select('h1 span')[1].get_text().encode('utf-8').replace('\xe2\x80\x8b', '')
-                councilor_data['official.name'] = soup.select('h1 span')[0].get_text().encode('utf-8').replace('\xe2\x80\x8b\xc2\xa0', '').replace('Deputy Mayor Pro Tem','')
+                councilor_data['official.name'] = soup.select('h1 span')[0].get_text().encode('utf-8').replace('\xe2\x80\x8b\xc2\xa0', '').replace('\xe2\x80\x8b', '').replace('Mayor Pro Tem', '')
                 councilor_data['website'] =  root_url + page_url
                 councilor_data['office.name'] = soup.select('h1 span')[1].get_text().encode('utf-8').replace('\xe2\x80\x8b', '')
                 councilor_data['address'] = soup.select('li.deptAddress')[0].get_text().encode('utf-8').replace('Dallas', ' Dallas').replace(' Dallas City', 'Dallas City').replace('Hall', 'Hall ').replace("Phone: ", "*").replace(" Fax: ", "*").split("*")[0]
@@ -49,8 +49,8 @@ def get_councilor_data(page_url):
                 councilor_data['phone'] = soup.select('li.deptAddress')[0].get_text().encode('utf-8').replace('Dallas', ' Dallas').replace(' Dallas City', 'Dallas City').replace('Hall', 'Hall ').replace("Phone: ", "*").replace(" Fax: ", "*").split("*")[1]
             else:
                 councilor_data['address'] = soup.select('li.deptAddress')[0].get_text().encode('utf-8').replace('Dallas', ' Dallas').replace(' Dallas City', 'Dallas City').replace('Hall', 'Hall ').replace("Phone: ", "*").replace(" Fax: ", "*").split("*")[0]
-                councilor_data['electoral.district'] = "Dallas "+ soup.select('h1 p')[1].get_text().encode('utf-8').replace('\xe2\x80\x8b', '')
-                councilor_data['office.name'] = soup.select('h1 p')[1].get_text().encode('utf-8').replace('\xe2\x80\x8b', '')
+                councilor_data['electoral.district'] = "Dallas "+ soup.select('h1 p')[1].get_text().encode('utf-8').replace('\xe2\x80\x8b', '').replace('\xc2\xa0', '')
+                councilor_data['office.name'] = soup.select('h1 p')[1].get_text().encode('utf-8').replace('\xe2\x80\x8b', '').replace('\xc2\xa0', '')
                 councilor_data['official.name'] = soup.select('h1 p')[0].get_text().encode('utf-8').replace('\xe2\x80\x8b', '').replace('\xc2\xa0', '').replace('City Council Member ', '').replace('Council Member ', '')
                 councilor_data['website'] =  root_url + page_url
                 councilor_data['phone'] = soup.select('li.deptAddress')[0].get_text().encode('utf-8').replace('Dallas', ' Dallas').replace(' Dallas City', 'Dallas City').replace('Hall', 'Hall ').replace("Phone: ", "*").replace(" Fax: ", "*").split("*")[1]
