@@ -36,7 +36,7 @@ def get_councilor_data(page_url):
         councilor_data['phone'] = "832.393.1100"
         councilor_data['email'] = [a.attrs.get('href') for a in soup.select('p a[href^=mailto]')][0].replace('mailto:','')
         councilor_data['office.name'] = "City Council Member " + soup.select('h2.deptTitle')[0].get_text().encode('utf-8')
-        councilor_data['official.name'] = soup.select('h3.pageTitle')[0].get_text().encode('utf-8').replace('Council Member ', '')
+        councilor_data['official.name'] = soup.select('h3.pageTitle')[0].get_text().encode('utf-8').replace('Council Member ', '').replace('---','')
         if "At-Large" in councilor_data['office.name']:
             councilor_data['electoral.district'] = 'Houston'
         else:
