@@ -21,7 +21,7 @@ def get_page_urls():
         print '404 error. Check the url for {0}'.format(index_url)
     else:
         response = requests.get(index_url)
-        soup = bs4.BeautifulSoup(response.text)
+        soup = bs4.BeautifulSoup(response.text, 'lxml')
         return [a.attrs.get('href') for a in soup.select('ul.side-sub-menu a[href^=/council]')]
 
 
@@ -32,7 +32,7 @@ def get_councilor_data(page_url):
     else:
         councilor_data = {}
         response = requests.get(root_url+page_url)
-        soup = bs4.BeautifulSoup(response.text)
+        soup = bs4.BeautifulSoup(response.text, 'lxml')
         try:        
             if ', I' in soup.select('title')[0].get_text().encode('utf-8').replace('\r\n','').replace('\t', '').replace('\xc3\x91', 'N'):
                 str = " "
@@ -59,9 +59,6 @@ page_urls = get_page_urls()
 for page_url in page_urls:
     dictList.append(get_councilor_data(page_url)) 
 
-#adds state
-for dictionary in dictList:
-    dictionary['state'] = 'TX'
 
 #scrape mayor page
 def mayor_page():
@@ -69,9 +66,9 @@ def mayor_page():
     if checkURL(mayor_url) == 404:
         print '404 error. Check the url for {0}'.format(mayor_url)
     else:
-        mayor_soup = bs4.BeautifulSoup((requests.get(mayor_url)).text)
+        mayor_soup = bs4.BeautifulSoup((requests.get(mayor_url)).text, 'lxml')
         mayorDict = {}
-        mayorDict['official.name'] = mayor_soup.select('h1')[0].get_text().encode('utf-8').replace('\n', '')
+        mayorDict['official.name'] = mayor_soup.select('h1')[0].get_text().encode('utf-8').replace('\n', '').replace('Mayor ','')
         mayorDict['office.name'] = "Mayor"
         mayorDict['electoral.district'] = "San Antonio"
         mayorDict['address'] = "City Hall 100 Military Plaza San Antonio, TX 78205"
@@ -84,11 +81,18 @@ def mayor_page():
 
 mayor_page()
 
-
+#adds other info
+for dictionary in dictList:
+    dictionary['state'] = 'TX'
+    dictionary['body represents - muni'] = 'San Antonio'
+    if "District" in dictionary['electoral.district']:
+        dictionary['OCDID'] = 'ocd-division/country:us/state:{0}/place:{1}/council_district:'.format(dictionary['state'].lower(), dictionary['body represents - muni'].lower().replace(' ','_')) + dictionary['electoral.district'][-2:].lower().strip()
+    else:
+        dictionary['OCDID'] = 'ocd-division/country:us/state:{0}/place:{1}'.format(dictionary['state'].lower(),dictionary['body represents - muni'].lower().replace(' ','_')) 
 
 
 #creates csv
-fieldnames = ['state','electoral.district','office.name','official.name', 'address','phone','website', 'email', 'party']
+fieldnames = ['UID','state','body represents - muni','Body Name','electoral.district','office.name','official.name', 'address','phone','website', 'email', 'facebook', 'twitter', "OCDID"]
 san_antonio_council_file = open('san_antonio_council.csv','wb')
 csvwriter = csv.DictWriter(san_antonio_council_file, delimiter=',', fieldnames=fieldnames)
 csvwriter.writerow(dict((fn,fn) for fn in fieldnames))

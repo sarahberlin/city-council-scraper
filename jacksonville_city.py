@@ -14,7 +14,7 @@ def checkURL(x):
 
 root_url = 'http://www.coj.net/city-council.aspx#feature01'
 response = requests.get(root_url)
-soup = bs4.BeautifulSoup(response.text)
+soup = bs4.BeautifulSoup(response.text, 'lxml')
 dictList = []
 
 #runs error check on root_url
@@ -61,9 +61,6 @@ def get_councilor_data2():
 get_councilor_data1()
 get_councilor_data2() 
 
-#adds states
-for dictionary in dictList:
-    dictionary['state'] = 'FL'
 
 #scrape mayor page
 def mayor_page():
@@ -71,7 +68,7 @@ def mayor_page():
     if checkURL(mayor_url) == 404:
         print '404 error. Check the url for {0}'.format(mayor_url)
     else:
-        mayor_soup = bs4.BeautifulSoup((requests.get(mayor_url)).text)
+        mayor_soup = bs4.BeautifulSoup((requests.get(mayor_url)).text, 'lxml')
         mayorDict = {}
         mayorDict['official.name'] = mayor_soup.select('h1')[0].get_text().encode('utf-8').replace('Office of Mayor ','').replace('\r\n', '').strip()
         mayorDict['office.name'] = "Mayor"
@@ -80,15 +77,20 @@ def mayor_page():
         mayorDict['website'] = mayor_url
         mayorDict['phone'] = '(904) 630-1776'
         mayorDict['email'] = 'MayorLennyCurry@coj.net'
-        mayorDict['state'] = "FL"
         dictList.append(mayorDict)
         return dictList 
 
 mayor_page()
 
+for dictionary in dictList:
+    dictionary['state'] = 'FL'
+    dictionary['body represents - muni'] = 'Jacksonville'
+    if "District" in dictionary['electoral.district']:
+        dictionary['OCDID'] = 'ocd-division/country:us/state:{0}/place:{1}/council_district:'.format(dictionary['state'].lower(), dictionary['body represents - muni'].lower().replace(' ','_')) + dictionary['electoral.district'][-2:].lower().strip()
+    else:
+        dictionary['OCDID'] = 'ocd-division/country:us/state:{0}/place:{1}'.format(dictionary['state'].lower(),dictionary['body represents - muni'].lower())  
 
-
-fieldnames = ['state','electoral.district','office.name','official.name', 'address','phone','website', 'email', 'party']
+fieldnames = ['UID','state','body represents - muni','Body Name','electoral.district','office.name','official.name', 'address','phone','website', 'email', 'facebook', 'twitter', "OCDID"]
 jacksonville_council_file = open('jacksonville_council.csv','wb')
 csvwriter = csv.DictWriter(jacksonville_council_file, delimiter=',', fieldnames=fieldnames)
 csvwriter.writerow(dict((fn,fn) for fn in fieldnames))

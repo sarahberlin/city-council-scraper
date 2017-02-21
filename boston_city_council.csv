@@ -1,0 +1,15 @@
+UID,state,body represents - muni,Body Name,state,electoral.district,office.name,official.name,address,phone,website,email,facebook,twitter,OCDID
+,MA,Boston,,MA,Boston,City Council Member At-Large,Michelle Wu,,,https://www.boston.gov/departments/city-council/michelle-wu,,,,ocd-division/country:us/state:ma/place:boston
+,MA,Boston,,MA,Boston,City Council Member At-Large,Michael Flaherty,,,https://www.boston.gov/departments/city-council/michael-flaherty,,,,ocd-division/country:us/state:ma/place:boston
+,MA,Boston,,MA,Boston,City Council Member At-Large,Annissa Essaibi George,,,https://www.boston.gov/departments/city-council/annissa-essaibi-george,,,,ocd-division/country:us/state:ma/place:boston
+,MA,Boston,,MA,Boston,City Council Member At-Large,Ayanna Pressley,,,https://www.boston.gov/departments/city-council/ayanna-pressley,,,,ocd-division/country:us/state:ma/place:boston
+MAe00042,MA,Boston,,MA,Boston City Council District 1,City Council Member District 1,Salvatore LaMattina,,,https://www.boston.gov/departments/city-council/salvatore-lamattina,,,,ocd-division/country:us/state:ma/place:boston/council_district:1
+MAe00043,MA,Boston,,MA,Boston City Council District 2,City Council Member District 2,Bill Linehan,,,https://www.boston.gov/departments/city-council/bill-linehan,,,,ocd-division/country:us/state:ma/place:boston/council_district:2
+MAe00044,MA,Boston,,MA,Boston City Council District 3,City Council Member District 3,Frank Baker,,,https://www.boston.gov/departments/city-council/frank-baker,,,,ocd-division/country:us/state:ma/place:boston/council_district:3
+MAe00045,MA,Boston,,MA,Boston City Council District 4,City Council Member District 4,Andrea Campbell,,,https://www.boston.gov/departments/city-council/andrea-campbell,,,,ocd-division/country:us/state:ma/place:boston/council_district:4
+MAe00046,MA,Boston,,MA,Boston City Council District 5,City Council Member District 5,Timothy McCarthy,,,https://www.boston.gov/departments/city-council/timothy-mccarthy,,,,ocd-division/country:us/state:ma/place:boston/council_district:5
+MAe00047,MA,Boston,,MA,Boston City Council District 6,City Council Member District 6,Matt O'Malley,,,https://www.boston.gov/departments/city-council/matt-omalley,,,,ocd-division/country:us/state:ma/place:boston/council_district:6
+MAe00048,MA,Boston,,MA,Boston City Council District 7,City Council Member District 7,Tito Jackson,,,https://www.boston.gov/departments/city-council/tito-jackson,,,,ocd-division/country:us/state:ma/place:boston/council_district:7
+MAe00049,MA,Boston,,MA,Boston City Council District 8,City Council Member District 8,Josh Zakim,,,https://www.boston.gov/departments/city-council/josh-zakim,,,,ocd-division/country:us/state:ma/place:boston/council_district:8
+MAe00050,MA,Boston,,MA,Boston City Council District 9,City Council Member District 9,Mark Ciommo,,,https://www.boston.gov/departments/city-council/mark-ciommo,,,,ocd-division/country:us/state:ma/place:boston/council_district:9
+MAe00041,MA,Boston,,MA,Boston,Mayor,Martin J. Walsh,,,https://www.boston.gov/departments/mayors-office,,,,ocd-division/country:us/state:ma/place:boston

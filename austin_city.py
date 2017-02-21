@@ -21,7 +21,7 @@ def get_page_urls():
         print '404 error. Check the url for {0}'.format(index_url)
     else:
         response = requests.get(index_url)
-        soup = bs4.BeautifulSoup(response.text)
+        soup = bs4.BeautifulSoup(response.text, 'lxml')
         return list(set([a.attrs.get('href') for a in soup.select('p a[href^=/district]')]))
 
 #creates list of names and districts which will be added later
@@ -31,7 +31,7 @@ def get_names():
         print '404 error. Check the url for {0}'.format(index_url)
     else:
         response = requests.get(index_url)
-        soup = bs4.BeautifulSoup(response.text)
+        soup = bs4.BeautifulSoup(response.text, 'lxml')
         for x in range(1, 21):
             if x%2 == 1:
                 tempDict = {}
@@ -47,7 +47,7 @@ def get_councilor_data(page_url):
     else:
         councilor_data = {}
         response = requests.get(root_url+page_url)
-        soup = bs4.BeautifulSoup(response.text)
+        soup = bs4.BeautifulSoup(response.text, 'lxml')
         try:
             councilor_data['office.name'] = 'City Councilor ' + soup.select('title')[0].get_text().encode('utf-8').split(' |')[0]
             councilor_data['electoral.district'] = "Austin City Council "+soup.select('title')[0].get_text().encode('utf-8').split(' |')[0]
@@ -70,6 +70,7 @@ for page_url in page_urls:
 #adds state
 for dictionary in dictList:
     dictionary['state'] = 'TX'
+    dictionary['Body Name'] = "Austin Council"
 
 #adds official names to dictionaries
 get_names()
@@ -84,7 +85,7 @@ def mayor_page():
     if checkURL(mayor_url) == 404:
         print '404 error. Check the url for {0}'.format(mayor_url)
     else:  
-        mayor_soup = bs4.BeautifulSoup((requests.get(mayor_url)).text)
+        mayor_soup = bs4.BeautifulSoup((requests.get(mayor_url)).text, 'lxml')
         mayorDict = {}
         mayorDict['official.name'] =  [img.attrs.get('alt') for img in mayor_soup.select('p img[alt]')][0].replace("Mayor ", "")
         mayorDict['office.name'] = "Mayor"
@@ -93,13 +94,22 @@ def mayor_page():
         mayorDict['phone'] = '512-978-2100'
         mayorDict['website'] = mayor_url 
         mayorDict['state'] = "TX"
+        mayorDict['Body Name'] = 'Austin Board Of Directors'
         dictList.append(mayorDict)
         return dictList 
 
 mayor_page()
 
+
+for dictionary in dictList:
+    dictionary['body represents - muni'] = 'Austin'
+    if "District" in dictionary['electoral.district']:
+        dictionary['OCDID'] = 'ocd-division/country:us/state:{0}/place:{1}/council_district:'.format(dictionary['state'].lower(), dictionary['body represents - muni'].lower()) + dictionary['electoral.district'][-2:].strip()
+    else:
+        dictionary['OCDID'] = 'ocd-division/country:us/state:{0}/place:{1}'.format(dictionary['state'].lower(),dictionary['body represents - muni'].lower())   
+
 #creates csv
-fieldnames = ['state','electoral.district','office.name','official.name', 'address','phone','website', 'email', 'party']
+fieldnames = ['UID','state','body represents - muni','Body Name','electoral.district','office.name','official.name', 'address','phone','website', 'email', 'facebook', 'twitter', "OCDID"]
 austin_council_file = open('austin_council.csv','wb')
 csvwriter = csv.DictWriter(austin_council_file, delimiter=',', fieldnames=fieldnames)
 csvwriter.writerow(dict((fn,fn) for fn in fieldnames))

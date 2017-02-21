@@ -20,7 +20,7 @@ def get_page_urls():
         print '404 error. Check the url for {0}'.format(index_url)
     else:
         response = requests.get(index_url)
-        soup = bs4.BeautifulSoup(response.text)    
+        soup = bs4.BeautifulSoup(response.text, 'lxml')    
         return [a.attrs.get('href') for a in soup.select('a[href^=/government/citycouncil/district]')][:14]
 
 
@@ -31,30 +31,33 @@ def get_councilor_data(page_url):
     else:
         councilor_data = {}
         response = requests.get(root_url+page_url)
-        soup = bs4.BeautifulSoup(response.text)
+        soup = bs4.BeautifulSoup(response.text, 'lxml')
         try:        
             if page_url == '/government/citycouncil/district6/':
-                councilor_data['electoral.district'] = "Dallas "+soup.select('h1 span')[1].get_text().encode('utf-8').replace('\xe2\x80\x8b', '')
-                councilor_data['official.name'] = soup.select('h1 span')[0].get_text().encode('utf-8').replace('\xe2\x80\x8b\xc2\xa0', '').replace('\xe2\x80\x8b', '').replace('Mayor Pro Tem', '')
+                councilor_data['electoral.district'] = "Dallas "+soup.select('h1 span')[1].get_text().encode('utf-8').replace('\xe2\x80\x8b', '').replace('\n', " ")
+                councilor_data['official.name'] = soup.select('h1 span')[0].get_text().encode('utf-8').replace('\xe2\x80\x8b\xc2\xa0', '').replace('\xe2\x80\x8b', '').replace('Mayor Pro Tem', '').replace('Deputy Mayor Pro Tem ','').replace('\n', " ").strip()
                 councilor_data['website'] =  root_url + page_url
-                councilor_data['office.name'] = soup.select('h1 span')[1].get_text().encode('utf-8').replace('\xe2\x80\x8b', '')
+                councilor_data['office.name'] = soup.select('h1 span')[1].get_text().encode('utf-8').replace('\xe2\x80\x8b', '').replace('\n', " ")
                 councilor_data['address'] = soup.select('li.deptAddress')[0].get_text().encode('utf-8').replace('Dallas', ' Dallas').replace(' Dallas City', 'Dallas City').replace('Hall', 'Hall ').replace("Phone: ", "*").replace(" Fax: ", "*").split("*")[0]
                 councilor_data['phone'] = soup.select('li.deptAddress')[0].get_text().encode('utf-8').replace('Dallas', ' Dallas').replace(' Dallas City', 'Dallas City').replace('Hall', 'Hall ').replace("Phone: ", "*").replace(" Fax: ", "*").split("*")[1]
+                councilor_data['Body Name'] = 'Dallas Council'
             elif page_url == '/government/citycouncil/district14/':
-                councilor_data['electoral.district'] = "Dallas City Council "+soup.select('div h1')[0].get_text().encode('utf-8')
-                councilor_data['official.name'] =soup.select('h1 span')[0].get_text().encode('utf-8').replace('Council Member ', '')
-                councilor_data['office.name'] = "City Council "+soup.select('div h1')[0].get_text().encode('utf-8')
+                councilor_data['electoral.district'] = "Dallas City Council "+soup.select('div h1')[0].get_text().encode('utf-8').replace('\n', " ")
+                councilor_data['official.name'] =soup.select('h1 span')[0].get_text().encode('utf-8').replace('Council Member ', '').replace('Deputy Mayor Pro Tem ','').replace('\n', " ").strip()
+                councilor_data['office.name'] = "City Council "+soup.select('div h1')[0].get_text().encode('utf-8').replace('\n', " ")
                 councilor_data['website'] =  root_url + page_url
                 councilor_data['address'] = soup.select('li.deptAddress')[0].get_text().encode('utf-8').replace('Dallas', ' Dallas').replace(' Dallas City', 'Dallas City').replace('Hall', 'Hall ').replace("Phone: ", "*").replace(" Fax: ", "*").split("*")[0]
                 councilor_data['phone'] = soup.select('li.deptAddress')[0].get_text().encode('utf-8').replace('Dallas', ' Dallas').replace(' Dallas City', 'Dallas City').replace('Hall', 'Hall ').replace("Phone: ", "*").replace(" Fax: ", "*").split("*")[1]
+                councilor_data['Body Name'] = 'Dallas Council'
             else:
                 councilor_data['address'] = soup.select('li.deptAddress')[0].get_text().encode('utf-8').replace('Dallas', ' Dallas').replace(' Dallas City', 'Dallas City').replace('Hall', 'Hall ').replace("Phone: ", "*").replace(" Fax: ", "*").split("*")[0]
-                councilor_data['electoral.district'] = "Dallas "+ soup.select('h1 p')[1].get_text().encode('utf-8').replace('\xe2\x80\x8b', '').replace('\xc2\xa0', '')
-                councilor_data['office.name'] = soup.select('h1 p')[1].get_text().encode('utf-8').replace('\xe2\x80\x8b', '').replace('\xc2\xa0', '')
-                councilor_data['official.name'] = soup.select('h1 p')[0].get_text().encode('utf-8').replace('\xe2\x80\x8b', '').replace('\xc2\xa0', '').replace('City Council Member ', '').replace('Council Member ', '')
+                councilor_data['electoral.district'] = "Dallas "+ soup.select('h1 p')[1].get_text().encode('utf-8').replace('\xe2\x80\x8b', '').replace('\xc2\xa0', '').replace('\n', " ")
+                councilor_data['office.name'] = soup.select('h1 p')[1].get_text().encode('utf-8').replace('\xe2\x80\x8b', '').replace('\xc2\xa0', '').replace('\n', " ")
+                councilor_data['official.name'] = soup.select('h1 p')[0].get_text().encode('utf-8').replace('\xe2\x80\x8b', '').replace('\xc2\xa0', '').replace('City Council Member ', '').replace('Council Member ', '').replace('Deputy Mayor Pro Tem ','').replace('\n', " ").strip()
                 councilor_data['website'] =  root_url + page_url
                 councilor_data['phone'] = soup.select('li.deptAddress')[0].get_text().encode('utf-8').replace('Dallas', ' Dallas').replace(' Dallas City', 'Dallas City').replace('Hall', 'Hall ').replace("Phone: ", "*").replace(" Fax: ", "*").split("*")[1]
                 councilor_data['email'] = soup.select('a[href^=mailto]')[0].get_text().encode('utf-8')
+                councilor_data['Body Name'] = 'Dallas Council'
         except:
             pass
         return councilor_data
@@ -67,10 +70,6 @@ page_urls = get_page_urls()
 for page_url in page_urls:
     dictList.append(get_councilor_data(page_url)) 
 
-#adds states
-for dictionary in dictList:
-    dictionary['state'] = 'TX'
-
 
 #scrape mayor page
 def mayor_page():
@@ -78,7 +77,7 @@ def mayor_page():
     if checkURL(mayor_url) == 404:
         print '404 error. Check the url for {0}'.format(mayor_url)
     else:
-        mayor_soup = bs4.BeautifulSoup((requests.get(mayor_url)).text)
+        mayor_soup = bs4.BeautifulSoup((requests.get(mayor_url)).text, 'lxml')
         mayorDict = {}
         mayorDict['official.name'] = mayor_soup.select('title')[0].get_text().encode('utf-8').replace('\r\n', '').replace('\t', '').replace('City of Dallas ', '')
         mayorDict['office.name'] = "Mayor"
@@ -86,15 +85,25 @@ def mayor_page():
         mayorDict['address'] = "1500 Marilla St. Dallas, TX 75201"
         mayorDict['website'] = mayor_url
         mayorDict['phone'] = '214-670-3111'
-        mayorDict['state'] = "TX"
+        mayorDict['Body Name'] = 'Dallas Elected Officials'
         dictList.append(mayorDict)
         return dictList 
 
 mayor_page()
 
 
+#adds states
+for dictionary in dictList:
+    dictionary['state'] = 'TX'
+    dictionary['body represents - muni'] = 'Dallas'
+    if "District" in dictionary['electoral.district']:
+        dictionary['OCDID'] = 'ocd-division/country:us/state:{0}/place:{1}/council_district:'.format(dictionary['state'].lower(), dictionary['body represents - muni'].lower()) + dictionary['electoral.district'][-2:].strip()
+    else:
+        dictionary['OCDID'] = 'ocd-division/country:us/state:{0}/place:{1}'.format(dictionary['state'].lower(),dictionary['body represents - muni'].lower())  
+
+
 #creates csv
-fieldnames = ['state','electoral.district','office.name','official.name', 'address','phone','website', 'email', 'party']
+fieldnames = ['UID','state','body represents - muni','Body Name','electoral.district','office.name','official.name', 'address','phone','website', 'email', 'facebook', 'twitter', "OCDID"]
 dallas_council_file = open('dallas_council.csv','wb')
 csvwriter = csv.DictWriter(dallas_council_file, delimiter=',', fieldnames=fieldnames)
 csvwriter.writerow(dict((fn,fn) for fn in fieldnames))

@@ -16,17 +16,17 @@ def checkURL(x):
 
 root_url = 'http://www.sanjoseca.gov/council'
 response = requests.get(root_url)
-soup = bs4.BeautifulSoup(response.text)
+soup = bs4.BeautifulSoup(response.text, 'lxml')
 dictList = []
 
 
 def get_councilor_data():
     for x in range(1,11):
         cData = {}
-        cData['official.name']=soup.select('span.Subhead2')[x].get_text().encode('utf-8').split(", ")[0]
-        cData['electoral.district']='San Jose City Council '+soup.select('span.Subhead2')[x].get_text().encode('utf-8').split(", ")[1]
-        cData['office.name']= 'City Councilmember '+soup.select('span.Subhead2')[x].get_text().encode('utf-8').split(", ")[1]
-        cData['phone']= soup.select('tbody tr td')[x].get_text().split('\n')[1].encode('utf-8').replace('            Ph: ', '')
+        cData['official.name']=soup.select('span.Subhead2')[x].get_text().encode('utf-8').replace('\xa0',', ').replace('\xc2',', ').split(", ")[0].replace('Vice Mayor ','')
+        district =soup.select('span.Subhead2')[x].get_text().encode('utf-8').replace('\xa0',', ').replace('\xc2','').split(", ")[1].strip()
+        cData['electoral.district']='San Jose City Council '+ district
+        cData['office.name']= 'City Councilmember '+district
         cData['address']= '200 E. Santa Clara St. San Jose, CA 95113'
         cData['website']= 'http://www.sanjoseca.gov/council'
         cData['email']=  'district{0}@sanjoseca.gov'.format(x)
@@ -34,31 +34,34 @@ def get_councilor_data():
 
 get_councilor_data()
 
-for dictionary in dictList:
-    dictionary['state'] = 'CA'
-
 
 #scrape mayor page
 def mayor_page():
     mayor_url = 'http://www.sanjoseca.gov/mayor'
-    mayor_soup = bs4.BeautifulSoup((requests.get(mayor_url)).text)
+    mayor_soup = bs4.BeautifulSoup((requests.get(mayor_url)).text, 'lxml')
     mayorDict = {}
-    mayorDict['official.name'] = mayor_soup.select('div.Headline')[0].get_text().encode('utf-8').split(',')[0].replace('Office of Mayor ','')
+    mayorDict['official.name'] = mayor_soup.select('div.Headline')[0].get_text().encode('utf-8').split(',')[0].replace('Office of Mayor ','').replace('The ','')
     mayorDict['office.name'] = "Mayor"
     mayorDict['electoral.district'] = "San Jose"
     mayorDict['address'] = '200 E. Santa Clara St. San Jose, CA 95113'
-    mayorDict['website'] = 'http://www.sfmayor.org/'
+    mayorDict['website'] = 'http://www.sanjoseca.gov/mayor'
     mayorDict['phone'] = '408 535-3500 Main'
-    mayorDict['state'] = "CA"
     dictList.append(mayorDict)
     return dictList
 
 mayor_page()
 
-
+#adds other info
+for dictionary in dictList:
+    dictionary['state'] = 'CA'
+    dictionary['body represents - muni'] = 'San Jose'
+    if "District" in dictionary['electoral.district']:
+        dictionary['OCDID'] = 'ocd-division/country:us/state:{0}/place:{1}/council_district:'.format(dictionary['state'].lower(), dictionary['body represents - muni'].lower().replace(' ','_')) + dictionary['electoral.district'][-2:].lower().strip()
+    else:
+        dictionary['OCDID'] = 'ocd-division/country:us/state:{0}/place:{1}'.format(dictionary['state'].lower(),dictionary['body represents - muni'].lower().replace(' ','_')) 
 
 #makes csv
-fieldnames = ['state','electoral.district','office.name','official.name', 'address','phone','website', 'email', 'party']
+fieldnames = ['UID','state','body represents - muni','Body Name','electoral.district','office.name','official.name', 'address','phone','website', 'email', 'facebook', 'twitter', "OCDID"]
 san_jose_council_file = open('san_jose_council.csv','wb')
 csvwriter = csv.DictWriter(san_jose_council_file, delimiter=',', fieldnames=fieldnames)
 csvwriter.writerow(dict((fn,fn) for fn in fieldnames))
