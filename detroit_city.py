@@ -53,7 +53,7 @@ def council_scrape():
 council_scrape()
 
 def mayor_scrape():
-	mayor_url = 'http://www.detroitmi.gov/Government/Mayors-Office'
+	mayor_url = 'http://www.detroitmi.gov/Government/Mayors-Office/Administration#duggan'
 	driver = webdriver.PhantomJS()
 	driver.get(mayor_url)
 	content = driver.page_source
@@ -65,9 +65,9 @@ def mayor_scrape():
 	mayorDict['electoral.district'] = 'Detroit'
 	mayorDict['body represents - muni'] = 'Detroit'
 	mayorDict['state'] = "MI"
-	mayorDict['website'] = mayor_url
+	mayorDict['website'] = 'http://www.detroitmi.gov/Government/Mayors-Office/'
 	mayorDict['OCDID'] = 'ocd-division/country:us/state:{0}/place:{1}'.format(mayorDict['state'].lower(),mayorDict['body represents - muni'].lower().replace(' ', '_'))
-	mayorDict['official.name'] = doc.xpath('//h3[@class="carousel_title"]/a/text()')[0].encode('utf-8')
+	mayorDict['official.name'] = doc.xpath('//h2/text()')[0].encode('utf-8')
 	dictList.append(mayorDict)
 
 mayor_scrape()

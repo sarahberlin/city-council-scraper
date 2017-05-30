@@ -22,25 +22,14 @@ def scrape_table():
     soup = bs4.BeautifulSoup(response.text, 'lxml')
     for x in range(0,9):
         councilor_data = {}
-        row = soup.select('div.l-margin-bm')[x]
-        try:
-            councilor_data['electoral.district'] = 'San Diego City Council '+ row.get_text().encode('utf-8').replace('\xc2\xa0','').replace('\xc3\xb3','o').strip().split('\n')[0]
-            councilor_data['office.name'] = 'City Councilmember '+row.get_text().encode('utf-8').replace('\xc2\xa0','').replace('\xc3\xb3','o').strip().split('\n')[0]
-            councilor_data['website'] = index_url + "/cd{0}".format(councilor_data['electoral.district'][-2].strip())
-            councilor_data['address'] = 'City Administration Building, 202 C Street, San Diego, CA 92101.'
-            councilor_data['phone'] = '619-236-5555'
-            if "@" in row.get_text().encode('utf-8').replace('Council President', 'Council').replace('\xc2\xa0','').replace('\xc3\xb3','o').strip().split('\n')[1].split(' ')[-1]:
-                first_name = row.get_text().encode('utf-8').replace('Council President', 'Council').replace('\xc2\xa0','').replace('\xc3\xb3','o').strip().split('\n')[1].split(' ')[1]
-                last_and_email = row.get_text().encode('utf-8').replace('Council President', 'Council').replace('\xc2\xa0','').replace('\xc3\xb3','o').strip().split('\n')[1].split(' ')[2]
-                repeat_index = last_and_email.lower().find(first_name.lower())
-                councilor_data['official.name'] =first_name + " " +last_and_email[:repeat_index]
-                #print councilor_data['official.name']
-            else:
-                councilor_data['official.name'] = row.get_text().encode('utf-8').replace('\xc2\xa0','').replace('\xc3\xb3','o').strip().split('\n')[1].replace('Councilmember ','').replace('Council President Pro Tem','')
-            #print councilor_data['official.name']
-        except:
-            pass
-        dictList.append(councilor_data)    
+        row = soup.select('div.card.text-center.background-off-white.l-padding-vs')[x]
+        councilor_data['official.name'] = row.select('h2')[0].get_text().encode('utf-8').replace('\xc2\xa0','').replace('\xc3\xb3','o').strip().replace('\n',' ').replace('Councilmember ', '').replace('Council President Pro Tem ','').replace('Council President ','')
+        councilor_data['electoral.district'] = 'San Diego City Council '+row.select('p a')[1].get_text().encode('utf-8')
+        councilor_data['office.name'] = 'City Councilmember '+ row.select('p a')[1].get_text().encode('utf-8')
+        councilor_data['address'] = 'City Administration Building, 202 C Street, San Diego, CA 92101.'
+        councilor_data['phone'] = '619-236-5555'
+        councilor_data['website'] = root_url + [a.attrs.get('href') for a in row.select('p a[href]')][0]
+        dictList.append(councilor_data)
 
 scrape_table()
 

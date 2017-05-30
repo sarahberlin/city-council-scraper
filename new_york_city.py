@@ -39,32 +39,45 @@ except:
 #for x in doc.xpath('//td/a/strong/text()'):
 #	print x
 for url in doc.xpath('//td/a/@href'):
-	if url not in page_urls:
-		page_urls.append(url)
+    if url not in page_urls:
+        page_urls.append(url)
 
 def council_scrape(page_url):
-	driver = webdriver.PhantomJS()
-	driver.get(page_url)
-	content = driver.page_source
-	doc = lh.fromstring(content)
-	cData = {}
-	cData['official.name'] = doc.xpath('//h4/a/text()')[0].encode('utf-8')
-	cData['website'] = page_url
-	cData['office.name'] = 'Council Member '+ doc.xpath("//h1/a/text()")[0].encode('utf-8').replace('\xc2\xa0',' ')
-	cData['electoral.district'] = 'New York City Council '+ doc.xpath("//h1/a/text()")[0].encode('utf-8').replace('\xc2\xa0',' ')
-	cData['state'] = 'NY'
-	cData['body represents - muni'] = 'New York'
-	cData['OCDID'] = 'ocd-division/country:us/state:{0}/place:{1}/council_district:'.format(cData['state'].lower(), cData['body represents - muni'].lower().replace(' ','_')) + cData['electoral.district'][-2:].lower().strip()
-	driver.close()
-	os.system('taskkill /f /im phantomjs.exe')
-	return cData
+    driver = webdriver.PhantomJS()
+    driver.get(page_url)
+    content = driver.page_source
+    doc = lh.fromstring(content)
+    cData = {}
+    cData['official.name'] = doc.xpath('//h4/a/text()')[0].encode('utf-8')
+    cData['website'] = page_url
+    cData['office.name'] = 'Council Member '+ doc.xpath("//h1/a/text()")[0].encode('utf-8').replace('\xc2\xa0',' ')
+    cData['electoral.district'] = 'New York City Council '+ doc.xpath("//h1/a/text()")[0].encode('utf-8').replace('\xc2\xa0',' ')
+    cData['state'] = 'NY'
+    cData['body represents - muni'] = 'New York'
+    cData['OCDID'] = 'ocd-division/country:us/state:{0}/place:{1}/council_district:'.format(cData['state'].lower(), cData['body represents - muni'].lower().replace(' ','_')) + cData['electoral.district'][-2:].lower().strip()
+    driver.close()
+    try:
+        os.system('taskkill /f /im phantomjs.exe')
+    except:
+        pass
+    return cData
 	#print cData['electoral.district']
 
 for page_url in page_urls:
 	try:
 		dictList.append(council_scrape(page_url))
 	except:
-		pass
+		print page_url + " error"
+        #cData = {}
+        #cData['official.name'] = ''
+        #cData['website'] = page_url
+        #cData['office.name'] = 'Council Member District '+ page_url.replace('http://council.nyc.gov/district-','').replace('/','')
+        #cData['electoral.district'] = 'New York City Council District '+ page_url.replace('http://council.nyc.gov/district-','').replace('/','')
+        #cData['state'] = 'NY'
+        #cData['body represents - muni'] = 'New York'
+        #cData['OCDID'] = 'ocd-division/country:us/state:{0}/place:{1}/council_district:'.format(cData['state'].lower(), cData['body represents - muni'].lower().replace(' ','_')) + cData['electoral.district'][-2:].lower().strip()
+        #dictList.append(cData)
+        pass
 
 
 #scrape mayor page
@@ -88,9 +101,6 @@ def mayor_page():
         return dictList 
 
 mayor_page()
-
-#for x in dictList:
-#	print x
 
 
 

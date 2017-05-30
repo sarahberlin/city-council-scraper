@@ -12,54 +12,33 @@ def checkURL(x):
     return code
 
 
-root_url = 'http://www.coj.net/city-council.aspx#feature01'
+root_url = 'http://www.coj.net/city-council.aspx'
 response = requests.get(root_url)
 soup = bs4.BeautifulSoup(response.text, 'lxml')
 dictList = []
 
-#runs error check on root_url
-
-
-def get_councilor_data1():
+def get_councilor_data():
     if checkURL(root_url) == 404:
         print '404 error. Check the url for {0}'.format(root_url)
     else:
-        for x in range (1,15):
+        for x in range(0,14):
             newDict = {}
-            newDict['office.name'] =  "City Council Member "+ soup.select('td h2')[x].get_text().encode('utf-8').replace('\r\n          ','').split(':')[0].replace('Group', 'At-Large Group').replace('\r\n\t\t\t\t\t\t\t\t\t\t','')
-            newDict['official.name'] = soup.select('td h2')[x].get_text().encode('utf-8').replace('\r\n          ','').split(':')[1].strip()
-            newDict['electoral.district'] = "Jacksonville City Council " + soup.select('td h2')[x].get_text().encode('utf-8').replace('\r\n          ','').split(':')[0].replace('Group', 'At-Large Group').replace('\r\n\t\t\t\t\t\t\t\t\t\t','')
+            row = soup.select('ul.secondCMSListMenuUL li')[x]
+            newDict['office.name'] =  "City Council Member "+ [a.attrs.get('href') for a in row.select('a[href]')][0].split('-members/')[1].replace('.aspx', '').replace('d0', "District ").replace('al', "At-Large Group ")
+            newDict['official.name'] = row.select('a')[0].get_text().encode('utf-8')
+            newDict['body represents - muni'] = "Jacksonville"
+            newDict['state'] = "FL"
             newDict['address'] = '117 West Duval St., Suite 425 Jacksonville, FL 32202'
-            newDict['website'] = root_url
-            if x < 7:
-                newDict['email'] = [a.attrs.get('href') for a in soup.select('div a[href*mailto:]')][x].replace('mailto:','')
-            elif x > 7:
-                newDict['email'] = [a.attrs.get('href') for a in soup.select('div a[href*mailto:]')][x-1].replace('mailto:','')
-            if x < 4:
-                newDict['phone'] = soup.find_all('div', {'align':'left'})[x-1].get_text().encode('utf-8').split('\r\n')[1].replace('Phone: ', '').strip()
+            newDict['website'] = [a.attrs.get('href') for a in row.select('a[href]')][0]
+            if "Large" in newDict['office.name']:
+                newDict['electoral.district'] = "Jacksonville"
+                newDict['OCDID'] = 'ocd-division/country:us/state:{0}/place:{1}'.format(newDict['state'].lower(),newDict['body represents - muni'].lower())  
             else:
-                newDict['phone'] = soup.find_all('div', {'align':'left'})[x].get_text().encode('utf-8').split('\r\n')[1].replace('Phone: ', '').strip()
+                newDict['electoral.district'] = "Jacksonville City Council " + [a.attrs.get('href') for a in row.select('a[href]')][0].split('-members/')[1].replace('.aspx', '').replace('d', "District ").replace('District 0', 'District ')
+                newDict['OCDID'] = 'ocd-division/country:us/state:{0}/place:{1}/council_district:'.format(newDict['state'].lower(), newDict['body represents - muni'].lower().replace(' ','_')) + newDict['electoral.district'][-2:].lower().strip()
             dictList.append(newDict)
-        return dictList
 
-def get_councilor_data2():
-    if checkURL(root_url) == 404:
-        print '404 error. Check the url for {0}'.format(root_url)
-    else: 
-        for x in range (16,21):
-            newDict = {}
-            newDict['office.name'] = "City Council Member "+ soup.select('td h2')[x].get_text().encode('utf-8').replace('\r\n          ','').split(':')[0].replace('Group', 'At-Large Group').replace('\r\n\t\t\t\t\t\t\t\t\t\t','')
-            newDict['official.name'] = soup.select('td h2')[x].get_text().encode('utf-8').replace('\r\n          ','').split(':')[1].strip()
-            newDict['electoral.district'] = "Jacksonville" 
-            newDict['address'] = '117 West Duval St., Suite 425 Jacksonville, FL 32202'
-            newDict['website'] = root_url
-            newDict['phone'] = '(904) 630-1377'
-            dictList.append(newDict)
-        return dictList
-
-
-get_councilor_data1()
-get_councilor_data2() 
+get_councilor_data()
 
 
 #scrape mayor page
@@ -77,18 +56,13 @@ def mayor_page():
         mayorDict['website'] = mayor_url
         mayorDict['phone'] = '(904) 630-1776'
         mayorDict['email'] = 'MayorLennyCurry@coj.net'
+        mayorDict['state'] = 'FL'
+        mayorDict['body represents - muni'] = 'Jacksonville'
+        mayorDict['OCDID'] = 'ocd-division/country:us/state:{0}/place:{1}'.format(mayorDict['state'].lower(),mayorDict['body represents - muni'].lower())  
         dictList.append(mayorDict)
-        return dictList 
 
 mayor_page()
 
-for dictionary in dictList:
-    dictionary['state'] = 'FL'
-    dictionary['body represents - muni'] = 'Jacksonville'
-    if "District" in dictionary['electoral.district']:
-        dictionary['OCDID'] = 'ocd-division/country:us/state:{0}/place:{1}/council_district:'.format(dictionary['state'].lower(), dictionary['body represents - muni'].lower().replace(' ','_')) + dictionary['electoral.district'][-2:].lower().strip()
-    else:
-        dictionary['OCDID'] = 'ocd-division/country:us/state:{0}/place:{1}'.format(dictionary['state'].lower(),dictionary['body represents - muni'].lower())  
 
 fieldnames = ['UID','state','body represents - muni','Body Name','electoral.district','office.name','official.name', 'address','phone','website', 'email', 'facebook', 'twitter', "OCDID"]
 jacksonville_council_file = open('jacksonville_council.csv','wb')

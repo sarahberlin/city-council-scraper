@@ -21,7 +21,7 @@ dictList = []
 def council_scrape():
 	for row in soup.select('div.col-sm-4 ul li'):
 		cData = {}
-		cData['official.name'] = row.select('a')[0].get_text().encode('utf-8').replace('\xc3\xa1l', '')
+		cData['official.name'] = row.select('a')[0].get_text().encode('utf-8').replace('\xc3\xa1', 'a')
 		cData['office.name'] = 'Council, ' + row.get_text().split('-')[0].strip()
 		cData['website'] = root_url + [a.attrs.get('href') for a in row.select('a[href]')][0]
 		cData['state'] = 'WA'

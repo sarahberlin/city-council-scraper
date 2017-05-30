@@ -16,46 +16,40 @@ def checkURL(x):
 
 #get page urls of all the councilors
 def get_page_urls():
-    if checkURL(index_url) == 404:
-        print '404 error. Check the url for {0}'.format(index_url)
-    else:
-        response = requests.get(index_url)
-        soup = bs4.BeautifulSoup(response.text, 'lxml')    
-        return [a.attrs.get('href') for a in soup.select('h4 a[href]')]
+    response = requests.get(index_url)
+    soup = bs4.BeautifulSoup(response.text, 'lxml')    
+    return [a.attrs.get('href') for a in soup.select('h4 a[href]')]
 
 #get data from each individual councilor's page
 def get_councilor_data(page_url):
-    if checkURL(root_url+page_url) == 404:
-        print '404 error. Check the url for {0}'.format(root_url+page_url)
-    else:
-        councilor_data = {}
-        response = requests.get(root_url + page_url)
-        soup = bs4.BeautifulSoup(response.text, 'lxml')
+    councilor_data = {}
+    response = requests.get(root_url + page_url)
+    soup = bs4.BeautifulSoup(response.text, 'lxml')
+    try:
+        if len(soup.select('tr td')[3].get_text().encode('utf-8')) == 12:
+            councilor_data['phone'] = soup.select('tr td')[3].get_text().encode('utf-8')
+        else:
+            councilor_data['phone'] = '312.744.5000'
+        councilor_data['address'] = '121 N. LaSalle Street Chicago, Illinois 60602'
         try:
-            if len(soup.select('tr td')[3].get_text().encode('utf-8')) == 12:
-                councilor_data['phone'] = soup.select('tr td')[3].get_text().encode('utf-8')
+            if "Chicago" in soup.select('tr td')[7].get_text().encode('utf-8'):
+                councilor_data['address'] = soup.select('tr td')[7].get_text().encode('utf-8').replace('\n', '').replace('\xc2\xa0', ' ')
             else:
-                councilor_data['phone'] = '312.744.5000'
-            councilor_data['address'] = '121 N. LaSalle Street Chicago, Illinois 60602'
-            try:
-                if "Chicago" in soup.select('tr td')[7].get_text().encode('utf-8'):
-                    councilor_data['address'] = soup.select('tr td')[7].get_text().encode('utf-8').replace('\n', '').replace('\xc2\xa0', ' ')
-                else:
-                    councilor_data['address'] = '121 N. LaSalle Street Chicago, Illinois 60602'
-            except:
-                pass
-            councilor_data['office.name'] = "Alderman "+soup.find_all('h1')[0].get_text().encode('utf-8')
-            councilor_data['electoral.district'] = "Chicago City Council District " + soup.find_all('h1')[0].get_text().encode('utf-8').replace('Ward ', '').strip()
-            councilor_data['official.name'] = soup.select('h3')[2].get_text().encode('utf-8').replace('Alderman', '').replace('\xc2\xa0',' ').strip()
-            councilor_data['website'] = (root_url + page_url).encode('utf-8')
-            councilor_data['email'] = [a.attrs.get('href') for a in soup.select('td a[href]')][0].encode('utf-8').replace('mailto:','')
-            councilor_data['state'] = 'IL'
-            councilor_data['Body Name'] = 'Chicago Council'
-            councilor_data['body represents - muni'] = 'Chicago'
-            councilor_data['OCDID'] = 'ocd-division/country:us/state:{0}/place:{1}/ward:'.format(councilor_data['state'].lower(), councilor_data['body represents - muni'].lower()) + councilor_data['electoral.district'][-2:].strip()
+                councilor_data['address'] = '121 N. LaSalle Street Chicago, Illinois 60602'
         except:
             pass
-        return councilor_data
+        councilor_data['office.name'] = "Alderman "+soup.find_all('h1')[0].get_text().encode('utf-8')
+        councilor_data['electoral.district'] = "Chicago City Council District " + soup.find_all('h1')[0].get_text().encode('utf-8').replace('Ward ', '').strip()
+        councilor_data['official.name'] = soup.select('h3')[2].get_text().encode('utf-8').replace('Alderman', '').replace('\xc2\xa0',' ').strip()
+        councilor_data['website'] = (root_url + page_url).encode('utf-8')
+        councilor_data['email'] = [a.attrs.get('href') for a in soup.select('td a[href]')][0].encode('utf-8').replace('mailto:','')
+        councilor_data['state'] = 'IL'
+        councilor_data['Body Name'] = 'Chicago Council'
+        councilor_data['body represents - muni'] = 'Chicago'
+        councilor_data['OCDID'] = 'ocd-division/country:us/state:{0}/place:{1}/ward:'.format(councilor_data['state'].lower(), councilor_data['body represents - muni'].lower()) + councilor_data['electoral.district'][-2:].strip()
+    except:
+        pass
+    return councilor_data
 
 
 #creates empty list to store all of the councilor dictionaries
@@ -73,23 +67,19 @@ for page_url in page_urls:
 #scrape mayor page
 def mayor_page():
     mayor_url = 'http://www.cityofchicago.org/city/en/depts/mayor.html'
-    if checkURL(mayor_url) == 404:
-        print '404 error. Check the url for {0}'.format(mayor_url)
-    else:
-        mayor_soup = bs4.BeautifulSoup((requests.get(mayor_url)).text, 'lxml')
-        mayorDict = {}
-        mayorDict['official.name'] = mayor_soup.select('h2 span.small')[0].get_text().encode('utf-8').split(',')[0]
-        mayorDict['office.name'] = "Mayor"
-        mayorDict['electoral.district'] = "Chicago"
-        mayorDict['address'] = "121 N LaSalle Street Chicago City Hall 4th Floor Chicago, IL 60602 "
-        mayorDict['website'] = mayor_url 
-        mayorDict['state'] = "IL"
-        mayorDict['Body Name'] = 'Chicago Elected Officials'
-        mayorDict['body represents - muni'] = 'Chicago'
-        mayorDict['OCDID'] = 'ocd-division/country:us/state:{0}/place:{1}'.format(mayorDict['state'].lower(),mayorDict['body represents - muni'].lower())
-        dictList.append(mayorDict)
-        return dictList 
-
+    mayor_soup = bs4.BeautifulSoup((requests.get(mayor_url)).text, 'lxml')
+    mayorDict = {}
+    mayorDict['official.name'] = mayor_soup.select('h2 span.small')[0].get_text().encode('utf-8').split(',')[0]
+    mayorDict['office.name'] = "Mayor"
+    mayorDict['electoral.district'] = "Chicago"
+    mayorDict['address'] = "121 N LaSalle Street Chicago City Hall 4th Floor Chicago, IL 60602 "
+    mayorDict['website'] = mayor_url 
+    mayorDict['state'] = "IL"
+    mayorDict['Body Name'] = 'Chicago Elected Officials'
+    mayorDict['body represents - muni'] = 'Chicago'
+    mayorDict['OCDID'] = 'ocd-division/country:us/state:{0}/place:{1}'.format(mayorDict['state'].lower(),mayorDict['body represents - muni'].lower())
+    dictList.append(mayorDict)
+    return dictList 
 mayor_page()
 
 

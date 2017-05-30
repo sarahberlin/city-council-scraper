@@ -1,5 +1,5 @@
 UID,state,body represents - muni,Body Name,state,electoral.district,office.name,official.name,address,phone,website,email,facebook,twitter,OCDID
-CIe00573,NY,New York,,NY,New York City Council District 1,Council Member District 1,Margaret Chin,,,http://council.nyc.gov/district-1/,,,,ocd-division/country:us/state:ny/place:new_york/council_district:1
+CIe00573,NY,New York,,NY,New York City Council District 1,Council Member District 1,Margaret S. Chin,,,http://council.nyc.gov/district-1/,,,,ocd-division/country:us/state:ny/place:new_york/council_district:1
 CIe00584,NY,New York,,NY,New York City Council District 2,Council Member District 2,Rosie Mendez,,,http://council.nyc.gov/district-2/,,,,ocd-division/country:us/state:ny/place:new_york/council_district:2
 CIe00595,NY,New York,,NY,New York City Council District 3,Council Member District 3,Corey Johnson,,,http://council.nyc.gov/district-3/,,,,ocd-division/country:us/state:ny/place:new_york/council_district:3
 CIe00606,NY,New York,,NY,New York City Council District 4,Council Member District 4,Daniel R. Garodnick,,,http://council.nyc.gov/district-4/,,,,ocd-division/country:us/state:ny/place:new_york/council_district:4
@@ -7,6 +7,7 @@ CIe00617,NY,New York,,NY,New York City Council District 5,Council Member Distric
 CIe00620,NY,New York,,NY,New York City Council District 6,Council Member District 6,Helen Rosenthal,,,http://council.nyc.gov/district-6/,,,,ocd-division/country:us/state:ny/place:new_york/council_district:6
 CIe00621,NY,New York,,NY,New York City Council District 7,Council Member District 7,Mark Levine,,,http://council.nyc.gov/district-7/,,,,ocd-division/country:us/state:ny/place:new_york/council_district:7
 CIe00622,NY,New York,,NY,New York City Council District 8,Council Member District 8,Melissa Mark-Viverito,,,http://council.nyc.gov/district-8/,,,,ocd-division/country:us/state:ny/place:new_york/council_district:8
+CIe00623,NY,New York,,NY,New York City Council District 9,Council Member District 9,Bill Perkins,,,http://council.nyc.gov/district-9/,,,,ocd-division/country:us/state:ny/place:new_york/council_district:9
 CIe00574,NY,New York,,NY,New York City Council District 10,Council Member District 10,Ydanis Rodriguez,,,http://council.nyc.gov/district-10/,,,,ocd-division/country:us/state:ny/place:new_york/council_district:10
 CIe00575,NY,New York,,NY,New York City Council District 11,Council Member District 11,Andrew Cohen,,,http://council.nyc.gov/district-11/,,,,ocd-division/country:us/state:ny/place:new_york/council_district:11
 CIe00576,NY,New York,,NY,New York City Council District 12,Council Member District 12,Andy King,,,http://council.nyc.gov/district-12/,,,,ocd-division/country:us/state:ny/place:new_york/council_district:12
@@ -23,7 +24,7 @@ CIe00587,NY,New York,,NY,New York City Council District 22,Council Member Distri
 CIe00588,NY,New York,,NY,New York City Council District 23,Council Member District 23,Barry Grodenchik,,,http://council.nyc.gov/district-23/,,,,ocd-division/country:us/state:ny/place:new_york/council_district:23
 CIe00589,NY,New York,,NY,New York City Council District 24,Council Member District 24,Rory I. Lancman,,,http://council.nyc.gov/district-24/,,,,ocd-division/country:us/state:ny/place:new_york/council_district:24
 CIe00590,NY,New York,,NY,New York City Council District 25,Council Member District 25,Daniel Dromm,,,http://council.nyc.gov/district-25/,,,,ocd-division/country:us/state:ny/place:new_york/council_district:25
-CIe00591,NY,New York,,NY,New York City Council District 26,Council Member District 26,James G. Van Bramer,,,http://council.nyc.gov/district-26/,,,,ocd-division/country:us/state:ny/place:new_york/council_district:26
+CIe00591,NY,New York,,NY,New York City Council District 26,Council Member District 26,Jimmy Van Bramer,,,http://council.nyc.gov/district-26/,,,,ocd-division/country:us/state:ny/place:new_york/council_district:26
 CIe00592,NY,New York,,NY,New York City Council District 27,Council Member District 27,I. Daneek Miller,,,http://council.nyc.gov/district-27/,,,,ocd-division/country:us/state:ny/place:new_york/council_district:27
 CIe00593,NY,New York,,NY,New York City Council District 28,Council Member District 28,Ruben Wills,,,http://council.nyc.gov/district-28/,,,,ocd-division/country:us/state:ny/place:new_york/council_district:28
 CIe00594,NY,New York,,NY,New York City Council District 29,Council Member District 29,Karen Koslowitz,,,http://council.nyc.gov/district-29/,,,,ocd-division/country:us/state:ny/place:new_york/council_district:29
@@ -48,5 +49,5 @@ CIe00614,NY,New York,,NY,New York City Council District 47,Council Member Distri
 CIe00615,NY,New York,,NY,New York City Council District 48,Council Member District 48,Chaim M. Deutsch,,,http://council.nyc.gov/district-48/,,,,ocd-division/country:us/state:ny/place:new_york/council_district:48
 CIe00616,NY,New York,,NY,New York City Council District 49,Council Member District 49,Deborah Rose,,,http://council.nyc.gov/district-49/,,,,ocd-division/country:us/state:ny/place:new_york/council_district:49
 CIe00618,NY,New York,,NY,New York City Council District 50,Council Member District 50,Steven Matteo,,,http://council.nyc.gov/district-50/,,,,ocd-division/country:us/state:ny/place:new_york/council_district:50
-CIe00619,NY,New York,,NY,New York City Council District 51,Council Member District 51,Joseph Borelli,,,http://council.nyc.gov/district-51/,,,,ocd-division/country:us/state:ny/place:new_york/council_district:51
+CIe00619,NY,New York,,NY,New York City Council District 51,Council Member District 51,Joseph C. Borelli,,,http://council.nyc.gov/district-51/,,,,ocd-division/country:us/state:ny/place:new_york/council_district:51
 CIe00570,NY,New York,,NY,New York City,Mayor,Bill de Blasio,"City Hall New York, NY 10007",212-NEW-YORK,http://www1.nyc.gov/office-of-the-mayor/index.page,,,,ocd-division/country:us/state:ny/place:new_york

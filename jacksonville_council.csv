@@ -1,41 +1,16 @@
 UID,state,body represents - muni,Body Name,state,electoral.district,office.name,official.name,address,phone,website,email,facebook,twitter,OCDID
-,,,,,,,,,,,,,,
-CIe00207,FL,Jacksonville,,FL,Jacksonville City Council District 1,City Council Member District 1,Joyce Morgan,"117 West Duval St., Suite 425 Jacksonville, FL 32202",(904) 630-1389,http://www.coj.net/city-council.aspx#feature01,ferraro@coj.net,,,ocd-division/country:us/state:fl/place:jacksonville/council_district:1
-,,,,,,,,,,,,,,
-CIe00213,FL,Jacksonville,,FL,Jacksonville City Council District 2,City Council Member District 2,Al Ferraro,"117 West Duval St., Suite 425 Jacksonville, FL 32202",(904) 630-1392,http://www.coj.net/city-council.aspx#feature01,abowman@coj.net,,,ocd-division/country:us/state:fl/place:jacksonville/council_district:2
-,,,,,,,,,,,,,,
-CIe00214,FL,Jacksonville,,FL,Jacksonville City Council District 3,City Council Member District 3,Aaron L. Bowman,"117 West Duval St., Suite 425 Jacksonville, FL 32202",(904) 630-1386,http://www.coj.net/city-council.aspx#feature01,swilson@coj.net,,,ocd-division/country:us/state:fl/place:jacksonville/council_district:3
-,,,,,,,,,,,,,,
-CIe00215,FL,Jacksonville,,FL,Jacksonville City Council District 4,City Council Member District 4,Scott Wilson,"117 West Duval St., Suite 425 Jacksonville, FL 32202",(904) 630-1394,http://www.coj.net/city-council.aspx#feature01,LBoyer@coj.net,,,ocd-division/country:us/state:fl/place:jacksonville/council_district:4
-,,,,,,,,,,,,,,
-CIe00216,FL,Jacksonville,,FL,Jacksonville City Council District 5,City Council Member District 5,Lori N. Boyer,"117 West Duval St., Suite 425 Jacksonville, FL 32202",(904) 630-1382,http://www.coj.net/city-council.aspx#feature01,MattS@coj.net,,,ocd-division/country:us/state:fl/place:jacksonville/council_district:5
-,,,,,,,,,,,,,,
-CIe00217,FL,Jacksonville,,FL,Jacksonville City Council District 6,City Council Member District 6,Matt Schellenberg,"117 West Duval St., Suite 425 Jacksonville, FL 32202",(904) 630-1388,http://www.coj.net/city-council.aspx#feature01,rgaffney@coj.net,,,ocd-division/country:us/state:fl/place:jacksonville/council_district:6
-,,,,,,,,,,,,,,
-CIe00218,FL,Jacksonville,,FL,Jacksonville City Council District 7,City Council Member District 7,Reggie Gaffney,"117 West Duval St., Suite 425 Jacksonville, FL 32202",(904) 630-1384,http://www.coj.net/city-council.aspx#feature01,,,,ocd-division/country:us/state:fl/place:jacksonville/council_district:7
-,,,,,,,,,,,,,,
-CIe00219,FL,Jacksonville,,FL,Jacksonville City Council District 8,City Council Member District 8,Katrina Brown,"117 West Duval St., Suite 425 Jacksonville, FL 32202",(904) 630-1385,http://www.coj.net/city-council.aspx#feature01,kbrown@coj.net,,,ocd-division/country:us/state:fl/place:jacksonville/council_district:8
-,,,,,,,,,,,,,,
-CIe00220,FL,Jacksonville,,FL,Jacksonville City Council District 9,City Council Member District 9,Garrett L. Dennis,"117 West Duval St., Suite 425 Jacksonville, FL 32202",(904) 630-1395,http://www.coj.net/city-council.aspx#feature01,garrettd@coj.net,,,ocd-division/country:us/state:fl/place:jacksonville/council_district:9
-,,,,,,,,,,,,,,
-CIe00208,FL,Jacksonville,,FL,Jacksonville City Council District 10,City Council Member District 10,Reginald L. Brown,"117 West Duval St., Suite 425 Jacksonville, FL 32202",(904) 630-1684,http://www.coj.net/city-council.aspx#feature01,RBrown@coj.net,,,ocd-division/country:us/state:fl/place:jacksonville/council_district:10
-,,,,,,,,,,,,,,
-CIe00209,FL,Jacksonville,,FL,Jacksonville City Council District 11,City Council Member District 11,Danny Becton,"117 West Duval St., Suite 425 Jacksonville, FL 32202",(904) 630-1383,http://www.coj.net/city-council.aspx#feature01,dbecton@coj.net,,,ocd-division/country:us/state:fl/place:jacksonville/council_district:11
-,,,,,,,,,,,,,,
-CIe00210,FL,Jacksonville,,FL,Jacksonville City Council District 12,City Council Member District 12,Doyle Carter,"117 West Duval St., Suite 425 Jacksonville, FL 32202",(904) 630-1380,http://www.coj.net/city-council.aspx#feature01,doylec@coj.net,,,ocd-division/country:us/state:fl/place:jacksonville/council_district:12
-,,,,,,,,,,,,,,
-CIe00211,FL,Jacksonville,,FL,Jacksonville City Council District 13,City Council Member District 13,Bill Gulliford,"117 West Duval St., Suite 425 Jacksonville, FL 32202",(904) 630-1397,http://www.coj.net/city-council.aspx#feature01,Gulliford@coj.net,,,ocd-division/country:us/state:fl/place:jacksonville/council_district:13
-,,,,,,,,,,,,,,
-CIe00212,FL,Jacksonville,,FL,Jacksonville City Council District 14,City Council Member District 14,Jim Love,"117 West Duval St., Suite 425 Jacksonville, FL 32202",(904) 630-1390,http://www.coj.net/city-council.aspx#feature01,JimLove@coj.net,,,ocd-division/country:us/state:fl/place:jacksonville/council_district:14
-,,,,,,,,,,,,,,
-CIe00221,FL,Jacksonville,,FL,Jacksonville,City Council Member At-Large Group 1,Anna Lopez Brosche,"117 West Duval St., Suite 425 Jacksonville, FL 32202",(904) 630-1377,http://www.coj.net/city-council.aspx#feature01,,,,ocd-division/country:us/state:fl/place:jacksonville
-,,,,,,,,,,,,,,
-CIe00222,FL,Jacksonville,,FL,Jacksonville,City Council Member At-Large Group 2,John R. Crescimbeni,"117 West Duval St., Suite 425 Jacksonville, FL 32202",(904) 630-1377,http://www.coj.net/city-council.aspx#feature01,,,,ocd-division/country:us/state:fl/place:jacksonville
-,,,,,,,,,,,,,,
-CIe00223,FL,Jacksonville,,FL,Jacksonville,City Council Member At-Large Group 3,Tommy Hazouri,"117 West Duval St., Suite 425 Jacksonville, FL 32202",(904) 630-1377,http://www.coj.net/city-council.aspx#feature01,,,,ocd-division/country:us/state:fl/place:jacksonville
-,,,,,,,,,,,,,,
-CIe00224,FL,Jacksonville,,FL,Jacksonville,City Council Member At-Large Group 4,Greg Anderson,"117 West Duval St., Suite 425 Jacksonville, FL 32202",(904) 630-1377,http://www.coj.net/city-council.aspx#feature01,,,,ocd-division/country:us/state:fl/place:jacksonville
-,,,,,,,,,,,,,,
-CIe00225,FL,Jacksonville,,FL,Jacksonville,City Council Member At-Large Group 5,Samuel Newby,"117 West Duval St., Suite 425 Jacksonville, FL 32202",(904) 630-1377,http://www.coj.net/city-council.aspx#feature01,,,,ocd-division/country:us/state:fl/place:jacksonville
-,,,,,,,,,,,,,,
+CIe00216,FL,Jacksonville,,FL,Jacksonville City Council District 5,City Council Member District 5,Lori N. Boyer - Council President,"117 West Duval St., Suite 425 Jacksonville, FL 32202",,http://www.coj.net/city-council/city-council-members/d05.aspx,,,,ocd-division/country:us/state:fl/place:jacksonville/council_district:5
+CIe00222,FL,Jacksonville,,FL,Jacksonville,City Council Member At-Large Group 2,John R. Crescimbeni - Vice President,"117 West Duval St., Suite 425 Jacksonville, FL 32202",,http://www.coj.net/city-council/city-council-members/al2.aspx,,,,ocd-division/country:us/state:fl/place:jacksonville
+CIe00224,FL,Jacksonville,,FL,Jacksonville,City Council Member At-Large Group 4,Greg Anderson,"117 West Duval St., Suite 425 Jacksonville, FL 32202",,http://www.coj.net/city-council/city-council-members/al4.aspx,,,,ocd-division/country:us/state:fl/place:jacksonville
+CIe00209,FL,Jacksonville,,FL,Jacksonville City Council District 11,City Council Member d11,Danny Becton,"117 West Duval St., Suite 425 Jacksonville, FL 32202",,http://www.coj.net/city-council/city-council-members/d11.aspx,,,,ocd-division/country:us/state:fl/place:jacksonville/council_district:11
+CIe00214,FL,Jacksonville,,FL,Jacksonville City Council District 3,City Council Member District 3,Aaron L. Bowman,"117 West Duval St., Suite 425 Jacksonville, FL 32202",,http://www.coj.net/city-council/city-council-members/d03.aspx,,,,ocd-division/country:us/state:fl/place:jacksonville/council_district:3
+CIe00221,FL,Jacksonville,,FL,Jacksonville,City Council Member At-Large Group 1,Anna Lopez Brosche,"117 West Duval St., Suite 425 Jacksonville, FL 32202",,http://www.coj.net/city-council/city-council-members/al1.aspx,,,,ocd-division/country:us/state:fl/place:jacksonville
+CIe00219,FL,Jacksonville,,FL,Jacksonville City Council District 8,City Council Member District 8,Katrina Brown,"117 West Duval St., Suite 425 Jacksonville, FL 32202",,http://www.coj.net/city-council/city-council-members/d08.aspx,,,,ocd-division/country:us/state:fl/place:jacksonville/council_district:8
+CIe00208,FL,Jacksonville,,FL,Jacksonville City Council District 10,City Council Member d10,Reginald L. Brown,"117 West Duval St., Suite 425 Jacksonville, FL 32202",,http://www.coj.net/city-council/city-council-members/d10.aspx,,,,ocd-division/country:us/state:fl/place:jacksonville/council_district:10
+CIe00210,FL,Jacksonville,,FL,Jacksonville City Council District 12,City Council Member d12,Doyle Carter,"117 West Duval St., Suite 425 Jacksonville, FL 32202",,http://www.coj.net/city-council/city-council-members/d12.aspx,,,,ocd-division/country:us/state:fl/place:jacksonville/council_district:12
+CIe00220,FL,Jacksonville,,FL,Jacksonville City Council District 9,City Council Member District 9,Garrett L. Dennis,"117 West Duval St., Suite 425 Jacksonville, FL 32202",,http://www.coj.net/city-council/city-council-members/d09.aspx,,,,ocd-division/country:us/state:fl/place:jacksonville/council_district:9
+CIe00213,FL,Jacksonville,,FL,Jacksonville City Council District 2,City Council Member District 2,Al Ferraro,"117 West Duval St., Suite 425 Jacksonville, FL 32202",,http://www.coj.net/city-council/city-council-members/d02.aspx,,,,ocd-division/country:us/state:fl/place:jacksonville/council_district:2
+CIe00218,FL,Jacksonville,,FL,Jacksonville City Council District 7,City Council Member District 7,Reggie Gaffney,"117 West Duval St., Suite 425 Jacksonville, FL 32202",,http://www.coj.net/city-council/city-council-members/d07.aspx,,,,ocd-division/country:us/state:fl/place:jacksonville/council_district:7
+CIe00211,FL,Jacksonville,,FL,Jacksonville City Council District 13,City Council Member d13,Bill Gulliford,"117 West Duval St., Suite 425 Jacksonville, FL 32202",,http://www.coj.net/city-council/city-council-members/d13.aspx,,,,ocd-division/country:us/state:fl/place:jacksonville/council_district:13
+CIe00223,FL,Jacksonville,,FL,Jacksonville,City Council Member At-Large Group 3,Tommy Hazouri,"117 West Duval St., Suite 425 Jacksonville, FL 32202",,http://www.coj.net/city-council/city-council-members/al3.aspx,,,,ocd-division/country:us/state:fl/place:jacksonville
 CIe00226,FL,Jacksonville,,FL,Jacksonville,Mayor,Lenny Curry,"City Hall at St. James Building 117 W. Duval St.  Suite 400 Jacksonville, FL  32202",(904) 630-1776,http://www.coj.net/mayor.aspx,MayorLennyCurry@coj.net,,,ocd-division/country:us/state:fl/place:jacksonville

@@ -45,6 +45,7 @@ def mayor_page():
         mayorDict['office.name'] = "Mayor"
         mayorDict['electoral.district'] = "Memphis"
         mayorDict['state'] = "TN"
+        mayorDict['website'] = mayor_url
         mayorDict['body represents - muni'] = 'Memphis'
         mayorDict['OCDID'] = 'ocd-division/country:us/state:{0}/place:{1}'.format(mayorDict['state'].lower(),mayorDict['body represents - muni'].lower().replace(' ','_'))  
         dictList.append(mayorDict)

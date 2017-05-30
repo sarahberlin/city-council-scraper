@@ -73,6 +73,18 @@ def mayor_page():
 
 mayor_page()
 
+def controller_scrape():
+    controller_url = 'http://www.houstontx.gov/controller/index.html'
+    soup = bs4.BeautifulSoup((requests.get(controller_url)).text, 'lxml')
+    controllerDict = {}
+    controllerDict['official.name'] = soup.select('p.content11black')[1].get_text().encode('utf-8').replace('- Houston City Controller ','')
+    controllerDict['office.name'] = "Controller"
+    controllerDict['electoral.district'] = "Houston"
+    controllerDict['website'] = controller_url
+    dictList.append(controllerDict)
+    return dictList
+
+controller_scrape()
 
 #adds states
 for dictionary in dictList:
