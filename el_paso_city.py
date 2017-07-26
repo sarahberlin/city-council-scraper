@@ -3,13 +3,8 @@ import bs4
 import csv
 from csv import DictWriter
 import urllib, urllib2
-
-def checkURL(x):
-    try:
-        code = urllib2.urlopen(x).code
-    except:
-        code = 404
-    return code
+from selenium import webdriver
+import lxml.html as lh
 
 
 url ='https://www.elpasotexas.gov'
@@ -29,13 +24,14 @@ def council_scrape():
 			cData['office.name'] = "City Council Member " + row.select('a')[0].get_text().encode('utf-8').split(" - ")[0].strip()
 			cData['OCDID'] = 'ocd-division/country:us/state:{0}/place:{1}/council_district:'.format(cData['state'].lower(), cData['body represents - muni'].lower().replace(' ','_')) + cData['electoral.district'][-2:].lower().strip()
 		else:
-			cData['official.name'] = row.select('a')[0].get_text().encode('utf-8').replace("Mayor ", "")
+			cData['official.name'] = row.select('a')[0].get_text().encode('utf-8').strip().replace('Mayor ','')
 			cData['electoral.district'] = "El Paso"
-			cData['office.name'] = 'Mayor'
+			cData['office.name'] = 	'Mayor'		
 			cData['OCDID'] = 'ocd-division/country:us/state:{0}/place:{1}'.format(cData['state'].lower(),cData['body represents - muni'].lower().replace(' ', '_'))
 		dictList.append(cData)
 
 council_scrape()
+
 
 #creates csv
 fieldnames = ['UID','state','body represents - muni','Body Name','electoral.district','office.name','official.name', 'address','phone','website', 'email', 'facebook', 'twitter', "OCDID"]
@@ -49,6 +45,3 @@ el_paso_council_file.close()
  
 with open("el_paso_council.csv", "r") as el_paso_council_csv:
      el_paso_council = el_paso_council_csv.read()
-
-
-

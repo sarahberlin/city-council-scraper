@@ -33,28 +33,25 @@ def get_councilor_data(page_url):
         councilor_data = {}
         response = requests.get(root_url+page_url)
         soup = bs4.BeautifulSoup(response.text, 'lxml')
-        try:
-            if soup.select('span strong') != []:
-                base_text = soup.select('span strong')[0].get_text().encode('utf-8')
-            else:
-                base_text = soup.select('span.ms-rteStyle-CharcoalHeading')[0].get_text().encode('utf-8')
-            councilor_data['official.name'] = base_text.split(",")[0].replace("\xe2\x80\x8ba","a")
-            councilor_data['office.name'] = "City Council "+ base_text.split(",")[1].strip()
-            councilor_data['email'] = soup.select('a[href^=mailto]')[0].get_text().encode('utf-8').replace(' \n', '')
-            councilor_data['website'] = (root_url+page_url)
-            councilor_data['address'] = '600 E. 4th Street Charlotte, NC 28202'
-            councilor_data['state'] = 'NC'
-            councilor_data['Body Name'] = 'Charlotte Council'
-            councilor_data['phone'] ='704-336-2241'
-            if 'at-large' in base_text.split(",")[1].strip():
-                councilor_data['electoral.district'] = "Charlotte"
-            elif "district" in base_text.split(",")[1].strip() or "District" in base_text.split(",")[1].strip():
-                councilor_data['electoral.district'] = "Charlotte City Council "+base_text.split(",")[1].strip().replace(' Representative','').replace(' representative','').strip().replace('district', "District")
-            else:
-                councilor_data['electoral.district'] = "Charlotte"
-        except:
-            pass    
-        return councilor_data
+        if soup.select('span.ms-rteStyle-CharcoalHeading')[0].get_text().encode('utf-8') != '':
+            base_text = soup.select('span.ms-rteStyle-CharcoalHeading')[0].get_text().encode('utf-8')
+        else:
+            base_text = soup.select('div.ms-rtestate-field p strong')[0].get_text().encode('utf-8')
+        councilor_data['official.name'] = base_text.split(",")[0].replace("\xe2\x80\x8ba","a")
+        councilor_data['office.name'] = "City Council "+ base_text.split(",")[1].strip()
+        councilor_data['email'] = soup.select('a[href^=mailto]')[0].get_text().encode('utf-8').replace(' \n', '')
+        councilor_data['website'] = (root_url+page_url)
+        councilor_data['address'] = '600 E. 4th Street Charlotte, NC 28202'
+        councilor_data['state'] = 'NC'
+        councilor_data['Body Name'] = 'Charlotte Council'
+        councilor_data['phone'] ='704-336-2241'
+        if 'at-large' in base_text.split(",")[1].strip():
+            councilor_data['electoral.district'] = "Charlotte"
+        elif "district" in base_text.split(",")[1].strip() or "District" in base_text.split(",")[1].strip():
+            councilor_data['electoral.district'] = "Charlotte City Council "+base_text.split(",")[1].strip().replace(' Representative','').replace(' representative','').strip().replace('district', "District")
+        else:
+            councilor_data['electoral.district'] = "Charlotte"
+    return councilor_data
 
 #creates empty list to store all of the councilor dictionaries
 dictList = []
@@ -62,7 +59,7 @@ dictList = []
 #run the functions together
 page_urls = get_page_urls()
 for page_url in page_urls:
-    dictList.append(get_councilor_data(page_url)) 
+    dictList.append(get_councilor_data(page_url))
 
 for x in dictList:
     if x == []:
@@ -70,7 +67,7 @@ for x in dictList:
 
 #scrape mayor page
 def mayor_page():
-    mayor_url = 'http://charlottenc.gov/mayor/Pages/MeetTheMayor.aspx'  
+    mayor_url = 'http://charlottenc.gov/mayor/Pages/MeetTheMayor.aspx'
     if checkURL(mayor_url) == 404:
         print '404 error. Check the url for {0}'.format(mayor_url)
     else:
@@ -79,14 +76,14 @@ def mayor_page():
         mayorDict['official.name'] = mayor_soup.select('h3')[1].get_text().encode('utf-8').replace('Mayor ', '')
         mayorDict['office.name'] = "Mayor"
         mayorDict['electoral.district'] = "Charlotte"
-        mayorDict['address'] =  '600 East Fourth Street, 15th Floor Charlotte, NC 28202' 
+        mayorDict['address'] =  '600 East Fourth Street, 15th Floor Charlotte, NC 28202'
         mayorDict['email'] = 'mayor@charlottenc.gov'
         mayorDict['phone'] = '704-336-2241'
-        mayorDict['website'] = mayor_url 
+        mayorDict['website'] = mayor_url
         mayorDict['state'] = "NC"
         mayorDict['Body Name'] = 'Charlotte Elected Officials'
         dictList.append(mayorDict)
-        return dictList 
+        return dictList
 
 mayor_page()
 
@@ -95,7 +92,7 @@ for dictionary in dictList:
     if "District" in dictionary['electoral.district'] or 'district' in dictionary['electoral.district']:
         dictionary['OCDID'] = 'ocd-division/country:us/state:{0}/place:{1}/council_district:'.format(dictionary['state'].lower(), dictionary['body represents - muni'].lower()) + dictionary['electoral.district'][-1]
     else:
-        dictionary['OCDID'] = 'ocd-division/country:us/state:{0}/place:{1}'.format(dictionary['state'].lower(),dictionary['body represents - muni'].lower())   
+        dictionary['OCDID'] = 'ocd-division/country:us/state:{0}/place:{1}'.format(dictionary['state'].lower(),dictionary['body represents - muni'].lower())
 
 
 #creates csv
@@ -107,8 +104,8 @@ for row in dictList:
     csvwriter.writerow(row)
 
 charlotte_council_file.close()
- 
+
 with open("charlotte_council.csv", "r") as charlotte_council_csv:
      charlotte_council = charlotte_council_csv.read()
 
-#print charlotte_council 
+#print charlotte_council

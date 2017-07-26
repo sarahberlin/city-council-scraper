@@ -32,7 +32,7 @@ def get_councilor_data():
             newDict['website'] = [a.attrs.get('href') for a in row.select('a[href]')][0]
             if "Large" in newDict['office.name']:
                 newDict['electoral.district'] = "Jacksonville"
-                newDict['OCDID'] = 'ocd-division/country:us/state:{0}/place:{1}'.format(newDict['state'].lower(),newDict['body represents - muni'].lower())  
+                newDict['OCDID'] = 'ocd-division/country:us/state:{0}/place:{1}'.format(newDict['state'].lower(),newDict['body represents - muni'].lower())
             else:
                 newDict['electoral.district'] = "Jacksonville City Council " + [a.attrs.get('href') for a in row.select('a[href]')][0].split('-members/')[1].replace('.aspx', '').replace('d', "District ").replace('District 0', 'District ')
                 newDict['OCDID'] = 'ocd-division/country:us/state:{0}/place:{1}/council_district:'.format(newDict['state'].lower(), newDict['body represents - muni'].lower().replace(' ','_')) + newDict['electoral.district'][-2:].lower().strip()
@@ -49,7 +49,7 @@ def mayor_page():
     else:
         mayor_soup = bs4.BeautifulSoup((requests.get(mayor_url)).text, 'lxml')
         mayorDict = {}
-        mayorDict['official.name'] = mayor_soup.select('h1')[0].get_text().encode('utf-8').replace('Office of Mayor ','').replace('\r\n', '').strip()
+        mayorDict['official.name'] =mayor_soup.select('div#digital_river_frame_2 b')[0].get_text().encode('utf-8').replace('Office of Mayor ','').replace('\r\n', '').strip()
         mayorDict['office.name'] = "Mayor"
         mayorDict['electoral.district'] = "Jacksonville"
         mayorDict['address'] = 'City Hall at St. James Building 117 W. Duval St.  Suite 400 Jacksonville, FL  32202'
@@ -58,7 +58,7 @@ def mayor_page():
         mayorDict['email'] = 'MayorLennyCurry@coj.net'
         mayorDict['state'] = 'FL'
         mayorDict['body represents - muni'] = 'Jacksonville'
-        mayorDict['OCDID'] = 'ocd-division/country:us/state:{0}/place:{1}'.format(mayorDict['state'].lower(),mayorDict['body represents - muni'].lower())  
+        mayorDict['OCDID'] = 'ocd-division/country:us/state:{0}/place:{1}'.format(mayorDict['state'].lower(),mayorDict['body represents - muni'].lower())
         dictList.append(mayorDict)
 
 mayor_page()
@@ -72,7 +72,7 @@ for row in dictList:
     csvwriter.writerow(row)
 
 jacksonville_council_file.close()
- 
+
 with open("jacksonville_council.csv", "r") as jacksonville_council_csv:
      jacksonville_council = jacksonville_council_csv.read()
 
